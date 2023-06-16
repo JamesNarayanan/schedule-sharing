@@ -1,0 +1,24 @@
+:root {
+	color-scheme: light dark;
+
+	--bg: #fff;
+	--text: #111;
+
+	@media (prefers-color-scheme: dark) {
+		--bg: #11111e;
+		--text: #eee;
+	}
+}
+
+body {
+	background-color: var(--bg);
+	color: var(--text);
+}
+
+button {
+	padding: 0.25rem 0.5rem;
+	border: none;
+	border-radius: 2px;
+
+	cursor: pointer;
+}
