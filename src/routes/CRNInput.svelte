@@ -10,7 +10,7 @@
 		CRNs = CRNs.replaceAll(/[^\d,]/g, "");
 		CRNArray = CRNs.split(",");
 
-		const requests = CRNArray.map(async (CRN) => {
+		const requests = CRNArray.map(async CRN => {
 			if (CRN.length != 5) {
 				return "";
 			}
@@ -31,12 +31,15 @@
 			return text;
 		});
 
-		classes = (await Promise.all(requests)).filter((x) => !!x);
+		classes = (await Promise.all(requests)).filter(x => !!x);
 	}
 </script>
 
-<input type="text" bind:value={CRNs} />
-<button on:click={getCRNs}>Submit</button>
+<form on:submit|preventDefault={getCRNs}>
+	<label for="CRNs">CRNs</label>
+	<input type="text" bind:value={CRNs} />
+	<button type="submit">Submit</button>
+</form>
 
 {#if classes.length > 0}
 	<ul>
