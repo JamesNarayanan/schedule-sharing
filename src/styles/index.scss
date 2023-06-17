@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap");
+
 :root {
 	color-scheme: light dark;
 
@@ -13,6 +15,9 @@
 body {
 	background-color: var(--bg);
 	color: var(--text);
+
+	font-family: Nunito, sans-serif;
+	font-weight: 400;
 }
 
 button {
@@ -21,4 +26,10 @@ button {
 	border-radius: 2px;
 
 	cursor: pointer;
+}
+
+button,
+input,
+textarea {
+	font-family: inherit;
 }
