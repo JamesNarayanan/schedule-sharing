@@ -3,17 +3,14 @@
 	<h1>Schedule Sharing</h1>
 </header>
 
+<section>Groups:</section>
 <main>
 	<slot />
 </main>
 
 <style lang="scss">
 	header {
-		display: flex;
 		height: 2.5rem;
-		padding: 0.75rem;
-		border-bottom: 2px solid var(--low-alpha);
-		gap: 0.5rem;
 
 		img {
 			height: 100%;
@@ -25,6 +22,14 @@
 			font-weight: 600;
 			line-height: 1;
 		}
+	}
+
+	header,
+	section {
+		display: flex;
+		padding: 0.75rem;
+		border-bottom: 2px solid var(--low-alpha);
+		gap: 0.5rem;
 	}
 
 	main {

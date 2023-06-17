@@ -7,8 +7,7 @@
 	let classes: string[] = [];
 
 	async function getCRNs() {
-		CRNs = CRNs.replaceAll(/[^\d,]/g, "");
-		CRNArray = CRNs.split(",");
+		CRNArray = CRNs.replaceAll(/[^\d,]/g, "").split(",");
 
 		const requests = CRNArray.map(async CRN => {
 			if (CRN.length != 5) {
@@ -17,9 +16,7 @@
 			if (localStorage.getItem(CRN)) {
 				return localStorage.getItem(CRN) || "";
 			}
-			const response = await fetch(
-				`/oscar/bprod/bwckschd.p_disp_detail_sched?term_in=202308&crn_in=${CRN}`
-			);
+			const response = await fetch(`/oscar/bprod/bwckschd.p_disp_detail_sched?term_in=202308&crn_in=${CRN}`);
 			const html = await response.text();
 			const $ = cheerio.load(html);
 			const text = $("th.ddlabel").first().text();
