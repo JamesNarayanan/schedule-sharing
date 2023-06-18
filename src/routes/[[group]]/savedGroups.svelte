@@ -1,16 +1,25 @@
 <script lang="ts">
 	import type { groupType } from "$lib/types";
 	import { groupStore } from "$stores/groupStore";
+	import { onMount } from "svelte";
+	import { page } from "$app/stores";
 
 	let groups: groupType[] = [];
+	let selectedGroupId: string | null = null;
 	$: groups = $groupStore;
+
+	$: {
+		selectedGroupId = $page.url.pathname ? $page.url.pathname.substring(1) : null;
+	}
 </script>
 
 <div class="saved-groups">
 	<h1>Groups</h1>
 	<ul>
 		{#each groups as group}
-			<li><a href={`/${group.id}`}>{group.name}</a></li>
+			<li class:selected={group.id === selectedGroupId}>
+				<a href={`/${group.id}`}>{group.name}</a>
+			</li>
 		{/each}
 	</ul>
 </div>
@@ -33,27 +42,32 @@
 			margin: 0;
 			padding: 0;
 			gap: 0.75rem;
-		}
 
-		li {
-			display: flex;
-			align-items: center;
-			border-radius: 5px;
-			list-style: none;
-			background-color: var(--low-alpha);
-			font-weight: 600;
+			li {
+				display: flex;
+				align-items: center;
+				border-radius: 5px;
+				list-style: none;
+				background-color: var(--low-alpha);
+				font-weight: 600;
 
-			transition: background-color 0.1s ease-in-out;
+				transition: background-color 0.1s ease-in-out;
 
-			&:hover {
-				background-color: var(--med-alpha);
+				&:hover {
+					background-color: var(--med-alpha);
+				}
+
+				&.selected {
+					background-color: var(--text);
+					color: var(--bg);
+				}
+
+				a {
+					padding: 0.25rem 0.5rem;
+					text-decoration: none;
+					color: inherit;
+				}
 			}
-		}
-
-		a {
-			padding: 0.25rem 0.5rem;
-			text-decoration: none;
-			color: inherit;
 		}
 	}
 </style>
