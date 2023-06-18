@@ -5,7 +5,7 @@ export async function load({ params }) {
 
 	if (!group || group.length != 36) {
 		return {
-			group: null
+			group: undefined
 		};
 	}
 
@@ -14,7 +14,7 @@ export async function load({ params }) {
 	if (error) {
 		console.error(error);
 		return {
-			group: null
+			group: undefined
 		};
 	} else {
 		return {

@@ -5,12 +5,14 @@
 
 	--bg: #f9f9f9;
 	--text: #111;
-	--low-alpha: rgba(0, 0, 0, 0.05);
+	--low-alpha: rgba(0, 0, 0, 0.04);
+	--med-alpha: rgba(0, 0, 0, 0.075);
 
 	@media (prefers-color-scheme: dark) {
 		--bg: #13131c;
 		--text: #eee;
-		--low-alpha: rgba(255, 255, 255, 0.15);
+		--low-alpha: rgba(255, 255, 255, 0.075);
+		--med-alpha: rgba(255, 255, 255, 0.125);
 	}
 }
 

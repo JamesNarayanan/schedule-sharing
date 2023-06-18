@@ -1,9 +1,17 @@
 <script lang="ts">
-	import "../../styles/index.scss";
-	import type { Database } from "$lib/supabase";
+	import type { groupType } from "$lib/types";
+	import { groupStore } from "$stores/groupStore";
+	import "$styles/index.scss";
 
 	export let data;
-	let { group }: { group: Database["public"]["Tables"]["groups"]["Row"] | null } = data;
+	let group: groupType | undefined;
+
+	$: {
+		group = data?.group;
+		if (group) {
+			groupStore.addGroup(group);
+		}
+	}
 </script>
 
 <div>

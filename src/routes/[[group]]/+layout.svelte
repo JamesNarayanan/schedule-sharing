@@ -1,9 +1,13 @@
+<script>
+	import SavedGroups from "./savedGroups.svelte";
+</script>
+
 <header>
 	<img src="src/assets/buzz.png" alt="Buzz" />
 	<h1>Schedule Sharing</h1>
 </header>
 
-<section>Groups:</section>
+<section><SavedGroups /></section>
 <main>
 	<slot />
 </main>
@@ -28,7 +32,7 @@
 	section {
 		display: flex;
 		padding: 0.75rem;
-		border-bottom: 2px solid var(--low-alpha);
+		border-bottom: 2px solid var(--med-alpha);
 		gap: 0.5rem;
 	}
 
