@@ -5,23 +5,31 @@
 	 */
 	export let label: string;
 	/**
-	 * Placeholder text that will appear when the input is focused and empty
+	 * Placeholder text that will appear when the input is focused and empty.
+	 *
+	 * Defaults to label value. If set to an empty string, the label will be stuck floating.
 	 */
-	export let placeholder: string;
+	export let placeholder: string = label;
 	/**
 	 * Value to bind to the input
 	 */
 	export let value: string | number;
 	/**
 	 * Type of HTML input
+	 *
+	 * Defaults to "text"
 	 */
 	export let type: "text" | "password" | "email" | "number" | "tel" | "url" = "text";
 	/**
 	 * Regex pattern to validate the input
+	 *
+	 * Defaults to ".*" (any character, any number of times)
 	 */
 	export let pattern: string = ".*";
 	/**
-	 * Whether the input is required
+	 * Whether the input is required for form submission
+	 *
+	 * Defaults to false
 	 */
 	export let required: boolean = false;
 

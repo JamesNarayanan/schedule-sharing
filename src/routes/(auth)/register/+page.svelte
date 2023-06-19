@@ -37,20 +37,11 @@
 	/>
 	<button type="submit">Register</button>
 </form>
+<div class="anchor-wrapper">
+	<p>Already have an account?</p>
+	<a href="/sign-in" class="button">Sign In</a>
+</div>
 
 <style lang="scss">
-	h2 {
-		font-size: 2rem;
-	}
-	form {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.5rem;
-
-		button {
-			margin-top: 0.5rem;
-			font-size: 1rem;
-		}
-	}
+	@import "../auth.scss";
 </style>
