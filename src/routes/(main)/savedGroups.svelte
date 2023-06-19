@@ -13,7 +13,7 @@
 	}
 </script>
 
-<div class="saved-groups">
+<nav class="saved-groups">
 	<h1>Groups</h1>
 	<ul>
 		{#each groups as group}
@@ -22,7 +22,7 @@
 			</li>
 		{/each}
 	</ul>
-</div>
+</nav>
 
 <style lang="scss">
 	.saved-groups {

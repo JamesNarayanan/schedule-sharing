@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { groupType } from "$lib/types";
 	import { groupStore } from "$stores/groupStore";
-	import "$styles/index.scss";
 
 	export let data;
 	let group: groupType | undefined;
