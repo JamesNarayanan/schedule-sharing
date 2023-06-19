@@ -1,0 +1,94 @@
+<script lang="ts">
+	/**
+	 * Label that will float above the input when it is focused or has content.
+	 * Acts as a placeholder otherwise.
+	 */
+	export let label: string;
+	/**
+	 * Placeholder text that will appear when the input is focused and empty
+	 */
+	export let placeholder: string;
+	/**
+	 * Value to bind to the input
+	 */
+	export let value: string | number;
+	/**
+	 * Type of HTML input
+	 */
+	export let type: "text" | "password" | "email" | "number" | "tel" | "url" = "text";
+	/**
+	 * Regex pattern to validate the input
+	 */
+	export let pattern: string = ".*";
+	/**
+	 * Whether the input is required
+	 */
+	export let required: boolean = false;
+
+	const inputId = Math.random().toString(36).substring(2);
+
+	const handleInput = (event: Event & { currentTarget: HTMLInputElement }) => {
+		value = (event.target as HTMLInputElement).value;
+	};
+</script>
+
+<div class="floating-input-container">
+	<input
+		id={inputId}
+		{value}
+		{type}
+		{placeholder}
+		{pattern}
+		{required}
+		on:change={handleInput}
+		on:input={handleInput}
+	/>
+	<label for={inputId}>{label}</label>
+</div>
+
+<style lang="scss">
+	.floating-input-container {
+		--padding: 0.5rem;
+		--trans: 0.15s ease-in-out;
+
+		position: relative;
+		transition: margin-top var(--trans);
+
+		input {
+			padding: var(--padding);
+			border: none;
+			border-radius: 0.25rem;
+			font-size: 1rem;
+
+			&::placeholder {
+				transition: color var(--trans);
+				color: #999;
+			}
+			&:not(:focus)::placeholder {
+				color: transparent;
+			}
+		}
+
+		label {
+			position: absolute;
+			top: var(--padding);
+			left: var(--padding);
+			font-size: 1rem;
+			color: #999;
+			transition: all var(--trans);
+			pointer-events: none;
+		}
+
+		input:focus + label,
+		input:not(:placeholder-shown) + label {
+			top: -1.25rem;
+			font-size: 0.8rem;
+			color: var(--text);
+		}
+
+		&:has(input:focus),
+		&:has(input:not(:placeholder-shown)) {
+			margin-top: 1.25rem;
+		}
+	}
+</style>
