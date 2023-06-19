@@ -4,7 +4,8 @@
 </header>
 
 <slot />
-<link rel="stylesheet" href="/src/styles/index.scss" />
+
+<link rel="stylesheet" href="/src/routes/index.scss" />
 
 <style lang="scss">
 	header {
