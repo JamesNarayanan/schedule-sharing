@@ -1,11 +1,25 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
 	import FloatingInput from "$lib/FloatingInput.svelte";
+	import { supabase } from "$lib/supabaseClient";
+	import { Moon } from "svelte-loading-spinners";
 
 	let email: string = "";
 	let password: string = "";
+	let loading = false;
 
-	function signIn() {
-		console.log(email, password);
+	async function signIn() {
+		loading = true;
+		const { error } = await supabase.auth.signInWithPassword({
+			email,
+			password
+		});
+		if (error) {
+			console.error(error);
+			loading = false;
+		} else {
+			goto("/");
+		}
 	}
 </script>
 
@@ -23,7 +37,13 @@
 		pattern={`.{6,}`}
 		required
 	/>
-	<button type="submit">Sign In</button>
+	{#if loading}
+		<div class="loader-wrapper">
+			<Moon color="var(--text)" size={25} />
+		</div>
+	{:else}
+		<button type="submit">Sign In</button>
+	{/if}
 </form>
 <div class="anchor-wrapper">
 	<p>Don't have an account?</p>
