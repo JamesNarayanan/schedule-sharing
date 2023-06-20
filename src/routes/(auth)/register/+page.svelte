@@ -1,12 +1,25 @@
 <script lang="ts">
 	import FloatingInput from "$lib/FloatingInput.svelte";
+	import { supabase } from "$lib/supabaseClient";
 
 	let email: string = "";
 	let password: string = "";
 	let rePassword: string = "";
+	let name: string = "";
 
-	function register() {
-		console.log(email, password, rePassword);
+	async function register(event: Event) {
+		const { data, error } = await supabase.auth.signUp({
+			email,
+			password,
+			options: {
+				data: {
+					name
+				}
+			}
+		});
+		if (error) {
+			console.error(error);
+		}
 	}
 </script>
 
@@ -16,6 +29,12 @@
 
 <h2>Register</h2>
 <form on:submit|preventDefault={register}>
+	<FloatingInput
+		label="Name"
+		placeholder={`So your friends can find you!`}
+		bind:value={name}
+		required
+	/>
 	<FloatingInput
 		label="Email"
 		placeholder="user@example.com"
