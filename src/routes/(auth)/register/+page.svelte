@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import FloatingInput from "$lib/FloatingInput.svelte";
+	import Snackbar from "$lib/Snackbar.svelte";
 	import { supabase } from "$lib/supabaseClient";
 	import { Moon } from "svelte-loading-spinners";
 
@@ -9,6 +10,9 @@
 	let rePassword: string = "";
 	let name: string = "";
 	let loading: boolean = false;
+
+	let errorMessage: string = "";
+	let showSnackbar: boolean = false;
 
 	async function register(event: Event) {
 		loading = true;
@@ -23,6 +27,8 @@
 		});
 		if (error) {
 			console.error(error);
+			errorMessage = error.message;
+			showSnackbar = true;
 			loading = false;
 		} else {
 			goto("/");
@@ -77,6 +83,8 @@
 	<p>Already have an account?</p>
 	<a href="/sign-in" class="button">Sign In</a>
 </div>
+
+<Snackbar bind:show={showSnackbar} bind:message={errorMessage} type="error" />
 
 <style lang="scss">
 	@import "../auth.scss";

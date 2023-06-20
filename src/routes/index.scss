@@ -3,16 +3,33 @@
 :root {
 	color-scheme: light dark;
 
-	--bg: #f9f9f9;
-	--text: #111;
-	--low-alpha: rgba(0, 0, 0, 0.04);
-	--med-alpha: rgba(0, 0, 0, 0.075);
+	--light-bg: #f9f9f9;
+	--light-text: #111;
+	--light-low-alpha: rgba(0, 0, 0, 0.04);
+	--light-med-alpha: rgba(0, 0, 0, 0.075);
+	--light-high-alpha: rgba(0, 0, 0, 0.125);
+
+	--dark-bg: #13131c;
+	--dark-text: #f9f9f9;
+	--dark-low-alpha: rgba(255, 255, 255, 0.075);
+	--dark-med-alpha: rgba(255, 255, 255, 0.125);
+	--dark-high-alpha: rgba(255, 255, 255, 0.175);
+
+	--bg: var(--light-bg);
+	--text: var(--light-text);
+	--low-alpha: var(--light-low-alpha);
+	--med-alpha: var(--light-med-alpha);
+	--high-alpha: var(--light-high-alpha);
+
+	--error: #cb0000;
+	--success: #00e300;
 
 	@media (prefers-color-scheme: dark) {
-		--bg: #13131c;
-		--text: #eee;
-		--low-alpha: rgba(255, 255, 255, 0.075);
-		--med-alpha: rgba(255, 255, 255, 0.125);
+		--bg: var(--dark-bg);
+		--text: var(--dark-text);
+		--low-alpha: var(--dark-low-alpha);
+		--med-alpha: var(--dark-med-alpha);
+		--high-alpha: var(--dark-high-alpha);
 	}
 }
 
