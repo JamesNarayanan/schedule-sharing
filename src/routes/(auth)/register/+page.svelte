@@ -1,14 +1,18 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
 	import FloatingInput from "$lib/FloatingInput.svelte";
 	import { supabase } from "$lib/supabaseClient";
+	import { Moon } from "svelte-loading-spinners";
 
 	let email: string = "";
 	let password: string = "";
 	let rePassword: string = "";
 	let name: string = "";
+	let loading: boolean = false;
 
 	async function register(event: Event) {
-		const { data, error } = await supabase.auth.signUp({
+		loading = true;
+		const { error } = await supabase.auth.signUp({
 			email,
 			password,
 			options: {
@@ -19,6 +23,9 @@
 		});
 		if (error) {
 			console.error(error);
+			loading = false;
+		} else {
+			goto("/");
 		}
 	}
 </script>
@@ -58,7 +65,13 @@
 		bind:pattern={password}
 		required
 	/>
-	<button type="submit">Register</button>
+	{#if loading}
+		<div class="loader-wrapper">
+			<Moon color="var(--text)" size={25} />
+		</div>
+	{:else}
+		<button type="submit">Register</button>
+	{/if}
 </form>
 <div class="anchor-wrapper">
 	<p>Already have an account?</p>

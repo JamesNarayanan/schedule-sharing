@@ -58,6 +58,9 @@ devDependencies:
   svelte-check:
     specifier: ^3.0.1
     version: 3.4.3(postcss@8.4.24)(sass@1.63.4)(svelte@3.59.1)
+  svelte-loading-spinners:
+    specifier: ^0.3.4
+    version: 0.3.4
   tiny-glob:
     specifier: ^0.2.9
     version: 0.2.9
@@ -2042,6 +2045,10 @@ packages:
       svelte: ^3.19.0 || ^4.0.0-next.0
     dependencies:
       svelte: 3.59.1
+    dev: true
+
+  /svelte-loading-spinners@0.3.4:
+    resolution: {integrity: sha512-vKaW71QMCBcTNijAGc0mUl8k3DQ66iYmp6MB8BMGCXyWk82bTrcLy8FOnSm9fE+8q6TwzD6PLUoYFHt0II93Xw==}
     dev: true
 
   /svelte-local-storage-store@0.5.0(svelte@3.59.1):
