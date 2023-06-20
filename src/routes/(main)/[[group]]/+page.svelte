@@ -13,6 +13,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{data?.group?.name || "Groups"} • GT Schedule Sharing</title>
+</svelte:head>
+
 <div>
 	{#if group}
 		<h1>{group.name}</h1>

@@ -10,6 +10,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Register • GT Schedule Sharing</title>
+</svelte:head>
+
 <h2>Register</h2>
 <form on:submit|preventDefault={register}>
 	<FloatingInput

@@ -9,6 +9,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Sign In • GT Schedule Sharing</title>
+</svelte:head>
+
 <h2>Sign In</h2>
 <form on:submit|preventDefault={signIn}>
 	<FloatingInput label="Email" type="email" bind:value={email} required />
