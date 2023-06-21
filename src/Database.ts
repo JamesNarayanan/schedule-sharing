@@ -128,15 +128,15 @@ export interface Database {
       user_classes: {
         Row: {
           class_id: number
-          user_id: number
+          user_id: string
         }
         Insert: {
           class_id: number
-          user_id: number
+          user_id: string
         }
         Update: {
           class_id?: number
-          user_id?: number
+          user_id?: string
         }
         Relationships: [
           {
@@ -149,31 +149,6 @@ export interface Database {
             foreignKeyName: "user_classes_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      users: {
-        Row: {
-          group_id: string
-          id: number
-          name: string
-        }
-        Insert: {
-          group_id: string
-          id?: number
-          name: string
-        }
-        Update: {
-          group_id?: string
-          id?: number
-          name?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "users_group_id_fkey"
-            columns: ["group_id"]
-            referencedRelation: "groups"
             referencedColumns: ["id"]
           }
         ]

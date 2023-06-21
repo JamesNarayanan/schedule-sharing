@@ -10,7 +10,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"gen": "npx supabase gen types typescript --project-id \"jqdmyjwznyoszlwriscy\" --schema public > src/lib/supabase.ts"
+		"gen": "npx supabase gen types typescript --project-id \"jqdmyjwznyoszlwriscy\" --schema public > src/Database.ts"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
@@ -35,6 +35,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@supabase/auth-helpers-sveltekit": "^0.10.1",
 		"@supabase/supabase-js": "^2.25.0",
 		"cheerio": "1.0.0-rc.12",
 		"svelte-local-storage-store": "^0.5.0"

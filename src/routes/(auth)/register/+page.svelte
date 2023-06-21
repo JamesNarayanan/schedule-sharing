@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+	import { page } from "$app/stores";
 	import FloatingInput from "$lib/FloatingInput.svelte";
 	import Snackbar from "$lib/Snackbar.svelte";
-	import { supabase } from "$lib/supabaseClient";
 	import { Moon } from "svelte-loading-spinners";
+
+	export let data;
+	let { supabase } = data;
+	$: ({ supabase } = data);
 
 	let email: string = "";
 	let password: string = "";
@@ -31,7 +35,7 @@
 			showSnackbar = true;
 			loading = false;
 		} else {
-			goto("/");
+			goto($page.url.searchParams.get("redirect") || "/");
 		}
 	}
 </script>
