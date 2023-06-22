@@ -42,7 +42,7 @@
 		<img src="src/assets/buzz.png" alt="Buzz" />
 		<h1>Schedule Sharing</h1>
 	</div>
-	<button on:click={signOut}>Sign Out</button>
+	<button on:click={signOut} tabindex="-1">Sign Out</button>
 </header>
 
 <slot />
