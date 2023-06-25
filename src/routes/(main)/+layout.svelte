@@ -40,7 +40,7 @@
 	}
 
 	main {
-		padding: 0.5rem;
+		padding: 1rem;
 	}
 
 	a {
