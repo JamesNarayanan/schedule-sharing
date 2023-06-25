@@ -1,15 +1,14 @@
 <script lang="ts">
+	import { page } from "$app/stores";
 	import type { groupType } from "$lib/types";
 	import { groupStore } from "$stores/groupStore";
-	import { onMount } from "svelte";
-	import { page } from "$app/stores";
 
 	let groups: groupType[] = [];
 	let selectedGroupId: string | null = null;
 	$: groups = $groupStore;
 
 	$: {
-		selectedGroupId = $page.url.pathname ? $page.url.pathname.substring(1) : null;
+		selectedGroupId = $page.url.pathname.substring(7);
 	}
 </script>
 
@@ -18,7 +17,7 @@
 	<ul>
 		{#each groups as group}
 			<li class:selected={group.id === selectedGroupId}>
-				<a href={`/group/${group.id}`}>{group.name}</a>
+				<a href={`/group/${group.id}`} class="button">{group.name}</a>
 			</li>
 		{/each}
 	</ul>
@@ -44,28 +43,12 @@
 			gap: 0.75rem;
 
 			li {
-				display: flex;
-				align-items: center;
-				border-radius: 5px;
 				list-style: none;
-				background-color: var(--low-alpha);
-				font-weight: 600;
+				display: flex;
 
-				transition: background-color 0.1s ease-in-out;
-
-				&:hover {
-					background-color: var(--med-alpha);
-				}
-
-				&.selected {
+				&.selected a {
 					background-color: var(--text);
 					color: var(--bg);
-				}
-
-				a {
-					padding: 0.25rem 0.5rem;
-					text-decoration: none;
-					color: inherit;
 				}
 			}
 		}
