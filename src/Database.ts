@@ -9,7 +9,7 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      classes: {
+      courses: {
         Row: {
           course_number: number
           id: number
@@ -30,7 +30,7 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "classes_subject_fkey"
+            foreignKeyName: "courses_subject_fkey"
             columns: ["subject"]
             referencedRelation: "subjects"
             referencedColumns: ["id"]
@@ -57,31 +57,31 @@ export interface Database {
       }
       sections: {
         Row: {
-          class_id: number | null
+          course_id: number
           crn: number
           id: number
           name: string
-          semester_id: number | null
+          semester_id: number
         }
         Insert: {
-          class_id?: number | null
+          course_id: number
           crn: number
           id?: number
           name: string
-          semester_id?: number | null
+          semester_id: number
         }
         Update: {
-          class_id?: number | null
+          course_id?: number
           crn?: number
           id?: number
           name?: string
-          semester_id?: number | null
+          semester_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "sections_class_id_fkey"
-            columns: ["class_id"]
-            referencedRelation: "classes"
+            foreignKeyName: "sections_course_id_fkey"
+            columns: ["course_id"]
+            referencedRelation: "courses"
             referencedColumns: ["id"]
           },
           {
@@ -125,28 +125,28 @@ export interface Database {
         }
         Relationships: []
       }
-      user_classes: {
+      user_sections: {
         Row: {
-          class_id: number
+          section_id: number
           user_id: string
         }
         Insert: {
-          class_id: number
+          section_id: number
           user_id: string
         }
         Update: {
-          class_id?: number
+          section_id?: number
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "user_classes_class_id_fkey"
-            columns: ["class_id"]
-            referencedRelation: "classes"
+            foreignKeyName: "user_sections_section_id_fkey"
+            columns: ["section_id"]
+            referencedRelation: "sections"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "user_classes_user_id_fkey"
+            foreignKeyName: "user_sections_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
