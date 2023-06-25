@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { page } from "$app/stores";
+
+	$: notFound = $page.url.searchParams.has("not-found") || $page.url.pathname != "/group";
 </script>
 
 <svelte:head>
@@ -6,12 +9,16 @@
 </svelte:head>
 
 <div>
-	<h1>Select or create a group to start!</h1>
+	{#if notFound}
+		<h2>Group not found!</h2>
+	{/if}
+	<h2>Select or create a group to start!</h2>
 </div>
 
 <style>
-	h1 {
+	h2 {
 		margin: 0;
 		text-align: center;
+		font-size: 2rem;
 	}
 </style>

@@ -9,7 +9,7 @@ export async function load({ params, locals: { supabase } }) {
 
 	if (error) {
 		console.error(error);
-		throw redirect(303, "/group");
+		throw redirect(303, "/group?not-found");
 	} else {
 		return {
 			group: data
