@@ -1,3 +1,8 @@
+<script>
+	import HeaderTitle from "$lib/HeaderTitle.svelte";
+</script>
+
+<HeaderTitle />
 <section>
 	<slot />
 </section>
