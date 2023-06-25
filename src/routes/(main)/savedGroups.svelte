@@ -18,7 +18,7 @@
 	<ul>
 		{#each groups as group}
 			<li class:selected={group.id === selectedGroupId}>
-				<a href={`/${group.id}`}>{group.name}</a>
+				<a href={`/group/${group.id}`}>{group.name}</a>
 			</li>
 		{/each}
 	</ul>

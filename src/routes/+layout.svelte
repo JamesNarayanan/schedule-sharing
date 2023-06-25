@@ -39,7 +39,7 @@
 
 <header>
 	<div>
-		<img src="src/assets/buzz.png" alt="Buzz" />
+		<img src="/src/assets/buzz.png" alt="Buzz" />
 		<h1>Schedule Sharing</h1>
 	</div>
 	<button on:click={signOut} tabindex="-1">Sign Out</button>
