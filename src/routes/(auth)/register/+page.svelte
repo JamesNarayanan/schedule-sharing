@@ -35,7 +35,7 @@
 			showSnackbar = true;
 			loading = false;
 		} else {
-			goto($page.url.searchParams.get("redirect") || "/");
+			goto($page.url.searchParams.get("redirect") || "/profile");
 		}
 	}
 </script>
