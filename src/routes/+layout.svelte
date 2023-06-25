@@ -77,5 +77,10 @@
 			line-height: 1;
 			white-space: nowrap;
 		}
+
+		button {
+			font-size: 1rem;
+			align-self: center;
+		}
 	}
 </style>
