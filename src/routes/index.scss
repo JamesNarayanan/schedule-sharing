@@ -72,3 +72,19 @@ a.button {
 		outline: 2px solid var(--text);
 	}
 }
+
+a.ul {
+	background-image: linear-gradient(var(--text), var(--text));
+	background-size: 0% 2px;
+	background-position-y: 100%;
+	background-position-x: 100%;
+	background-repeat: no-repeat;
+	transition: background-size 0.1s ease-in-out;
+
+	&:hover,
+	&:focus,
+	&:active {
+		background-size: 100% 2px;
+		background-position-x: 0%;
+	}
+}

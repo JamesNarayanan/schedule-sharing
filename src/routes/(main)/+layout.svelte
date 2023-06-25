@@ -23,6 +23,7 @@
 </script>
 
 <HeaderTitle>
+	<a href="/profile" class="ul">Profile</a>
 	<button on:click={signOut} tabindex="-1">Sign Out</button>
 </HeaderTitle>
 <section><SavedGroups /></section>
@@ -40,6 +41,12 @@
 
 	main {
 		padding: 0.5rem;
+	}
+
+	a {
+		color: var(--text);
+		text-decoration: none;
+		font-size: 1.25rem;
 	}
 
 	button {

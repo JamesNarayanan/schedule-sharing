@@ -3,7 +3,9 @@
 		<img src="/src/assets/buzz.png" alt="Buzz" />
 		<h1>Schedule Sharing</h1>
 	</div>
-	<slot />
+	<div class="right">
+		<slot />
+	</div>
 </header>
 
 <style lang="scss">
@@ -19,6 +21,10 @@
 			display: flex;
 			align-items: center;
 			gap: 0.5rem;
+
+			&.right {
+				gap: 1rem;
+			}
 		}
 
 		img {
