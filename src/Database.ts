@@ -14,24 +14,24 @@ export interface Database {
           course_number: number
           id: number
           name: string
-          subject: number
+          subject_id: number
         }
         Insert: {
           course_number: number
           id?: number
           name: string
-          subject: number
+          subject_id: number
         }
         Update: {
           course_number?: number
           id?: number
           name?: string
-          subject?: number
+          subject_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "courses_subject_fkey"
-            columns: ["subject"]
+            foreignKeyName: "courses_subject_id_fkey"
+            columns: ["subject_id"]
             referencedRelation: "subjects"
             referencedColumns: ["id"]
           }
@@ -158,7 +158,18 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      register_class: {
+        Args: {
+          subject_abbrev: string
+          course_number: number
+          course_name: string
+          crn: number
+          semester_id: number
+          section_name: string
+          user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

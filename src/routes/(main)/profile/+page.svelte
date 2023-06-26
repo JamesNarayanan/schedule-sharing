@@ -1,9 +1,17 @@
 <script lang="ts">
+	import { enhance } from "$app/forms";
+
 	export let data;
 
 	$: user = data.user;
 </script>
 
+<h2>Add Courses</h2>
+<form method="POST" use:enhance>
+	<label for="CRNs">CRNs</label>
+	<input type="text" name="CRNs" />
+	<button>Submit</button>
+</form>
 <h2>My Courses</h2>
 <table>
 	<thead>
