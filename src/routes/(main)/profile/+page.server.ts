@@ -39,36 +39,38 @@ export const actions = {
 			.replaceAll(/[^\d,]/g, "")
 			.split(",");
 
-		CRNArray.forEach(async CRN => {
-			if (CRN.length != 5) return;
+		await Promise.all(
+			CRNArray.map(async CRN => {
+				if (CRN.length != 5) return;
 
-			const response = await fetch(
-				`https://oscar.gatech.edu/bprod/bwckschd.p_disp_detail_sched?term_in=${semester_id}&crn_in=${CRN}`
-			);
-			const html = await response.text();
-			const $ = cheerio.load(html);
-			const text = $("th.ddlabel").first().text();
-			if (!text) return;
+				const response = await fetch(
+					`https://oscar.gatech.edu/bprod/bwckschd.p_disp_detail_sched?term_in=${semester_id}&crn_in=${CRN}`
+				);
+				const html = await response.text();
+				const $ = cheerio.load(html);
+				const text = $("th.ddlabel").first().text();
+				if (!text) return;
 
-			const split = text.split(" - ");
-			if (split.length != 4) return;
+				const split = text.split(" - ");
+				if (split.length != 4) return;
 
-			const [course_name, crn, course, section_name] = split;
-			const [subject_abbrev, course_number] = course.split(" ");
+				const [course_name, crn, course, section_name] = split;
+				const [subject_abbrev, course_number] = course.split(" ");
 
-			const { error: registerError, status } = await supabase.rpc("register_class", {
-				course_name,
-				course_number: parseInt(course_number),
-				crn: parseInt(crn),
-				section_name,
-				subject_abbrev,
-				semester_id: parseInt(semester_id),
-				user_id: session.user.id
-			});
-			if (registerError) {
-				console.error(registerError);
-				throw error(status, { message: registerError.message });
-			}
-		});
+				const { error: registerError, status } = await supabase.rpc("register_class", {
+					course_name,
+					course_number: parseInt(course_number),
+					crn: parseInt(crn),
+					section_name,
+					subject_abbrev,
+					semester_id: parseInt(semester_id),
+					user_id: session.user.id
+				});
+				if (registerError) {
+					console.error(registerError);
+					throw error(status, { message: registerError.message });
+				}
+			})
+		);
 	}
 };

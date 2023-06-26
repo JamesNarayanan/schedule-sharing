@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
+	import FloatingInput from "$lib/FloatingInput.svelte";
 	import Snackbar from "$lib/Snackbar.svelte";
 
 	export let data;
@@ -11,6 +12,11 @@
 </script>
 
 <h2>Add Courses</h2>
+<p>
+	Paste in your comma-separated list of CRNs from
+	<a href="https://www.gt-scheduler.org" target="_blank">GT Scheduler</a>
+	here! (Export &rarr; Copy CRNs to clipboard)
+</p>
 <form
 	method="POST"
 	use:enhance={() => {
@@ -29,8 +35,7 @@
 		};
 	}}
 >
-	<label for="CRNs">CRNs</label>
-	<input type="text" name="CRNs" />
+	<FloatingInput label="CRNs" />
 	<button>Submit</button>
 </form>
 <h2>My Courses</h2>
@@ -51,8 +56,7 @@
 				<td>{sectionData.sections?.name}</td>
 				<td>{sectionData.sections?.crn}</td>
 				<td>{sectionData.sections?.semesters?.name}</td>
-				<td>
-					<button>Edit</button>
+				<td class="action-cell">
 					<button>Delete</button>
 				</td>
 			</tr>
@@ -65,6 +69,23 @@
 <style lang="scss">
 	h2 {
 		font-size: 2rem;
-		margin-top: 0;
+		margin: 0;
+	}
+
+	p {
+		margin: 0.5rem 0;
+	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		align-items: start;
+
+		margin-bottom: 2rem;
+	}
+
+	table {
+		text-align: center;
 	}
 </style>

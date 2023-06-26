@@ -11,9 +11,17 @@
 	 */
 	export let placeholder: string = label;
 	/**
-	 * Value to bind to the input
+	 * Name of the input (referenced in form actions)
+	 *
+	 * Defaults to label value
 	 */
-	export let value: string | number;
+	export let name: string = label;
+	/**
+	 * Value to bind to the input
+	 *
+	 * If using with form actions, leave undefined
+	 */
+	export let value: string | number | undefined = undefined;
 	/**
 	 * Type of HTML input
 	 *
@@ -43,9 +51,10 @@
 <div class="floating-input-container">
 	<input
 		id={inputId}
-		{value}
+		value={value || ""}
 		{type}
 		{placeholder}
+		{name}
 		{pattern}
 		{required}
 		on:change={handleInput}
