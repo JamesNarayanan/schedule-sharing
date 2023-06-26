@@ -1,14 +1,42 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
+	import { invalidateAll } from "$app/navigation";
 	import FloatingInput from "$lib/FloatingInput.svelte";
 	import Snackbar from "$lib/Snackbar.svelte";
+	import { load } from "cheerio";
+	import { Moon } from "svelte-loading-spinners";
 
 	export let data;
-	$: user = data.user;
+	$: ({ supabase, user } = data);
 
 	let snackbarMessage: string = "";
 	let showSnackbar: boolean = false;
 	let snackbarType: "error" | "success" = "error";
+
+	let loadingDelete: number[] = [];
+
+	async function unregisterSection(section_id: number) {
+		if (section_id === -1 || !user.id) return;
+
+		loadingDelete = [...loadingDelete, section_id];
+
+		const { error } = await supabase
+			.from("user_sections")
+			.delete()
+			.match({ section_id, user_id: user.id });
+		if (error) {
+			snackbarMessage = error.message;
+			showSnackbar = true;
+			snackbarType = "error";
+		} else {
+			snackbarMessage = "Successfully deleted section!";
+			showSnackbar = true;
+			snackbarType = "success";
+
+			user.sections = user.sections.filter(section => section.sections?.id !== section_id);
+		}
+		loadingDelete = loadingDelete.filter(id => id !== section_id);
+	}
 </script>
 
 <h2>Add Courses</h2>
@@ -57,7 +85,13 @@
 				<td>{sectionData.sections?.crn}</td>
 				<td>{sectionData.sections?.semesters?.name}</td>
 				<td class="action-cell">
-					<button>Delete</button>
+					{#if loadingDelete.includes(sectionData.sections?.id ?? -1)}
+						<Moon color="var(--text)" size={25} />
+					{:else}
+						<button on:click={() => unregisterSection(sectionData.sections?.id || -1)}>
+							Delete
+						</button>
+					{/if}
 				</td>
 			</tr>
 		{/each}
@@ -87,5 +121,9 @@
 
 	table {
 		text-align: center;
+	}
+
+	:global(table .action-cell > .wrapper) {
+		margin: 0 auto;
 	}
 </style>
