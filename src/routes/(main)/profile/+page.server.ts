@@ -40,22 +40,18 @@ export const actions = {
 			.split(",");
 
 		CRNArray.forEach(async CRN => {
-			if (CRN.length != 5) {
-				return;
-			}
+			if (CRN.length != 5) return;
+
 			const response = await fetch(
 				`https://oscar.gatech.edu/bprod/bwckschd.p_disp_detail_sched?term_in=${semester_id}&crn_in=${CRN}`
 			);
 			const html = await response.text();
 			const $ = cheerio.load(html);
 			const text = $("th.ddlabel").first().text();
-			if (!text) {
-				return;
-			}
+			if (!text) return;
+
 			const split = text.split(" - ");
-			if (split.length != 4) {
-				return;
-			}
+			if (split.length != 4) return;
 
 			const [course_name, crn, course, section_name] = split;
 			const [subject_abbrev, course_number] = course.split(" ");

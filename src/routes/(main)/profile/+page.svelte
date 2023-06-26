@@ -1,13 +1,34 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
+	import Snackbar from "$lib/Snackbar.svelte";
 
 	export let data;
-
 	$: user = data.user;
+
+	let snackbarMessage: string = "";
+	let showSnackbar: boolean = false;
+	let snackbarType: "error" | "success" = "error";
 </script>
 
 <h2>Add Courses</h2>
-<form method="POST" use:enhance>
+<form
+	method="POST"
+	use:enhance={() => {
+		return async ({ result, update }) => {
+			if (result.type === "error") {
+				snackbarMessage = result.error.message;
+				showSnackbar = true;
+				snackbarType = "error";
+				return;
+			} else if (result.type === "success") {
+				snackbarMessage = "Successfully added courses!";
+				showSnackbar = true;
+				snackbarType = "success";
+			}
+			update();
+		};
+	}}
+>
 	<label for="CRNs">CRNs</label>
 	<input type="text" name="CRNs" />
 	<button>Submit</button>
@@ -38,6 +59,8 @@
 		{/each}
 	</tbody>
 </table>
+
+<Snackbar bind:show={showSnackbar} bind:message={snackbarMessage} bind:type={snackbarType} />
 
 <style lang="scss">
 	h2 {
