@@ -98,7 +98,11 @@
 				<tbody>
 					{#each user.sections as sectionData}
 						<tr>
-							<td>{sectionData.sections?.courses?.name}</td>
+							<td
+								>{sectionData.sections?.courses?.subjects?.abbreviation}
+								{sectionData.sections?.courses?.course_number}: {sectionData
+									.sections?.courses?.name}</td
+							>
 							<td>{sectionData.sections?.name}</td>
 							<td>{sectionData.sections?.crn}</td>
 							<td>{sectionData.sections?.semesters?.name}</td>

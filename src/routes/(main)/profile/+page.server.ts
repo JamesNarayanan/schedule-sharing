@@ -10,7 +10,9 @@ export async function load({ locals: { supabase } }) {
 
 	const { data: sectionData, error: sectionError } = await supabase
 		.from("user_sections")
-		.select("sections (id, name, crn, courses (name), semesters (id, name))")
+		.select(
+			"sections (id, name, crn, courses (name, course_number, subjects (abbreviation)), semesters (id, name))"
+		)
 		.eq("user_id", userData.user.id);
 	if (sectionError) {
 		console.error(sectionError);
