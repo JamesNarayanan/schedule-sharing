@@ -10,7 +10,7 @@ export async function load({ locals: { supabase } }) {
 
 	const { data: sectionData, error: sectionError } = await supabase
 		.from("user_sections")
-		.select("sections (id, name, crn, courses (name), semesters (name))")
+		.select("sections (id, name, crn, courses (name), semesters (id, name))")
 		.eq("user_id", userData.user.id);
 	if (sectionError) {
 		console.error(sectionError);
@@ -37,9 +37,12 @@ export const actions = {
 		if (!session) {
 			throw error(401, { message: "Unauthorized" });
 		}
-		// we are save, let the user create the post
+
 		const formData = await request.formData();
-		const semester_id = "202308";
+		const semester_id = formData.get("semester_id")?.toString();
+		if (!semester_id || !semester_id.match(/20\d\d0[258]/)) {
+			throw error(400, { message: "Invalid semester" });
+		}
 		const CRNs = formData.get("CRNs");
 		if (!CRNs || CRNs.length < 5) {
 			throw error(400, { message: "Invalid CRNs" });

@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import { invalidateAll } from "$app/navigation";
 	import FloatingInput from "$lib/FloatingInput.svelte";
 	import Snackbar from "$lib/Snackbar.svelte";
-	import { load } from "cheerio";
-	import { onMount } from "svelte";
 	import { Moon } from "svelte-loading-spinners";
 
 	export let data;
 	$: ({ supabase, user, semesters } = data);
+	let semester: { id: number; name: string };
 
 	let snackbarMessage: string = "";
 	let showSnackbar: boolean = false;
@@ -45,9 +43,9 @@
 	<div>
 		<section class="semester">
 			<h2>Semester:</h2>
-			<select tabindex={1}>
+			<select bind:value={semester} tabindex={1}>
 				{#each semesters as sem}
-					<option value={sem.id}>{sem.name}</option>
+					<option value={sem}>{sem.name}</option>
 				{/each}
 			</select>
 		</section>
@@ -60,8 +58,9 @@
 			</p>
 			<form
 				method="POST"
-				use:enhance={() => {
+				use:enhance={({ formData }) => {
 					loadingNewCourses = true;
+					formData.append("semester_id", semester.id.toString());
 					return async ({ result, update }) => {
 						loadingNewCourses = false;
 						if (result.type === "error") {
