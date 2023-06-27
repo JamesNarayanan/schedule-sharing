@@ -29,6 +29,7 @@
 
 	--error: #cb0000;
 	--success: #00e300;
+	--accent: #eea903;
 
 	@media (prefers-color-scheme: dark) {
 		--bg: var(--dark-bg);
@@ -51,6 +52,10 @@ body {
 	margin: 0;
 }
 
+a {
+	color: var(--accent);
+}
+
 button,
 a.button {
 	padding: 0.25rem 0.5rem;
@@ -71,9 +76,21 @@ a.button {
 	}
 }
 
+select {
+	padding: 0.25rem 0.5rem;
+	border: none;
+	border-radius: 0.25rem;
+
+	color: var(--text);
+	background-color: var(--low-alpha);
+	text-align: left;
+	font-size: 1rem;
+}
+
 button,
 input,
 textarea,
+select,
 a.button {
 	font-family: inherit;
 

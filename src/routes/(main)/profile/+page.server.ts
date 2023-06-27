@@ -17,8 +17,17 @@ export async function load({ locals: { supabase } }) {
 		throw error(500, sectionError.message);
 	}
 
+	const { data: semesterData, error: semesterError } = await supabase
+		.from("semesters")
+		.select("*");
+	if (semesterError) {
+		console.error(semesterError);
+		throw error(500, semesterError.message);
+	}
+
 	return {
-		user: { ...userData.user, sections: sectionData }
+		user: { ...userData.user, sections: sectionData },
+		semesters: semesterData
 	};
 }
 
