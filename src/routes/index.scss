@@ -40,33 +40,40 @@
 		--med-high-alpha: var(--dark-med-high-alpha);
 		--high-alpha: var(--dark-high-alpha);
 	}
-}
 
-body {
 	background-color: var(--bg);
 	color: var(--text);
 
 	font-family: Nunito, sans-serif;
 	font-weight: 400;
+}
 
+body {
 	margin: 0;
 }
 
 a {
 	color: var(--accent);
+
+	&.ul {
+		background-image: linear-gradient(var(--text), var(--text));
+		background-size: 0% 2px;
+		background-position-y: 100%;
+		background-position-x: 100%;
+		background-repeat: no-repeat;
+		transition: background-size 0.1s ease-in-out;
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-size: 100% 2px;
+			background-position-x: 0%;
+		}
+	}
 }
 
 button,
 a.button {
-	padding: 0.25rem 0.5rem;
-	border: none;
-	border-radius: 0.25rem;
-
-	color: var(--text);
-	background-color: var(--low-alpha);
-	text-align: center;
-	font-size: 1rem;
-
 	transition: background-color 0.15s ease-in-out;
 	text-decoration: none;
 	cursor: pointer;
@@ -76,7 +83,11 @@ a.button {
 	}
 }
 
-select {
+select,
+input,
+textarea,
+button,
+a.button {
 	padding: 0.25rem 0.5rem;
 	border: none;
 	border-radius: 0.25rem;
@@ -85,33 +96,10 @@ select {
 	background-color: var(--low-alpha);
 	text-align: left;
 	font-size: 1rem;
-}
-
-button,
-input,
-textarea,
-select,
-a.button {
 	font-family: inherit;
 
 	&:focus {
 		outline: 2px solid var(--text);
-	}
-}
-
-a.ul {
-	background-image: linear-gradient(var(--text), var(--text));
-	background-size: 0% 2px;
-	background-position-y: 100%;
-	background-position-x: 100%;
-	background-repeat: no-repeat;
-	transition: background-size 0.1s ease-in-out;
-
-	&:hover,
-	&:focus,
-	&:active {
-		background-size: 100% 2px;
-		background-position-x: 0%;
 	}
 }
 
