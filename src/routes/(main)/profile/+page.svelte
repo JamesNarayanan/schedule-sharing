@@ -13,6 +13,7 @@
 	let showSnackbar: boolean = false;
 	let snackbarType: "error" | "success" = "error";
 
+	let loadingNewCourses: boolean = false;
 	let loadingDelete: number[] = [];
 
 	async function unregisterSection(section_id: number) {
@@ -48,7 +49,9 @@
 <form
 	method="POST"
 	use:enhance={() => {
+		loadingNewCourses = true;
 		return async ({ result, update }) => {
+			loadingNewCourses = false;
 			if (result.type === "error") {
 				snackbarMessage = result.error.message;
 				showSnackbar = true;
@@ -64,7 +67,11 @@
 	}}
 >
 	<FloatingInput label="CRNs" />
-	<button>Submit</button>
+	{#if loadingNewCourses}
+		<Moon color="var(--text)" size={25} />
+	{:else}
+		<button>Add Courses</button>
+	{/if}
 </form>
 <h2>My Courses</h2>
 <table>
