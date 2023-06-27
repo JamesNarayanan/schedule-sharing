@@ -24,7 +24,7 @@
 
 <HeaderTitle>
 	<a href="/profile" class="ul">Profile</a>
-	<button on:click={signOut} tabindex="-1">Sign Out</button>
+	<button on:click={signOut}>Sign Out</button>
 </HeaderTitle>
 <section><SavedGroups /></section>
 <main>

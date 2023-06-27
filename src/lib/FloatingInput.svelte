@@ -40,6 +40,12 @@
 	 * Defaults to false
 	 */
 	export let required: boolean = false;
+	/**
+	 * Tab Index of the input
+	 *
+	 * -1 (or any negative value) means it is not focusable. 0 means that it is focusable after all positive indexed elements
+	 */
+	export let tabindex: number | undefined = undefined;
 
 	const inputId = Math.random().toString(36).substring(2);
 
@@ -57,6 +63,7 @@
 		{name}
 		{pattern}
 		{required}
+		{tabindex}
 		on:change={handleInput}
 		on:input={handleInput}
 	/>

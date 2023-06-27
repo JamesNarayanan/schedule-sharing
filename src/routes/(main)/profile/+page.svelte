@@ -66,11 +66,11 @@
 		};
 	}}
 >
-	<FloatingInput label="CRNs" />
+	<FloatingInput label="CRNs" tabindex={1} />
 	{#if loadingNewCourses}
 		<Moon color="var(--text)" size={25} />
 	{:else}
-		<button>Add Courses</button>
+		<button tabindex={2}>Add Courses</button>
 	{/if}
 </form>
 <h2>My Courses</h2>
