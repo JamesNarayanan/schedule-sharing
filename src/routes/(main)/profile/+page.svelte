@@ -7,6 +7,8 @@
 	export let data;
 	$: ({ supabase, user, semesters } = data);
 	let semester: { id: number; name: string };
+	$: currSections =
+		semester?.id && user?.sections?.filter(section => section?.semesters?.id === semester?.id);
 
 	let snackbarMessage: string = "";
 	let showSnackbar: boolean = false;
@@ -33,7 +35,7 @@
 			showSnackbar = true;
 			snackbarType = "success";
 
-			user.sections = user.sections.filter(section => section.sections?.id !== section_id);
+			user.sections = user.sections.filter(section => section?.id !== section_id);
 		}
 		loadingDelete = loadingDelete.filter(id => id !== section_id);
 	}
@@ -91,35 +93,42 @@
 						<th>Course</th>
 						<th>Section</th>
 						<th>CRN</th>
-						<th>Term</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					{#each user.sections as sectionData}
+					{#if !currSections}
 						<tr>
-							<td
-								>{sectionData.sections?.courses?.subjects?.abbreviation}
-								{sectionData.sections?.courses?.course_number}: {sectionData
-									.sections?.courses?.name}</td
-							>
-							<td>{sectionData.sections?.name}</td>
-							<td>{sectionData.sections?.crn}</td>
-							<td>{sectionData.sections?.semesters?.name}</td>
-							<td class="action-cell">
-								{#if loadingDelete.includes(sectionData.sections?.id ?? -1)}
-									<Moon color="var(--text)" size={25} />
-								{:else}
-									<button
-										on:click={() =>
-											unregisterSection(sectionData.sections?.id || -1)}
-									>
-										Delete
-									</button>
-								{/if}
-							</td>
+							<td colspan="5"><Moon color="var(--text)" size={25} /></td>
 						</tr>
-					{/each}
+					{:else}
+						{#each currSections as section}
+							<tr>
+								<td>
+									{section?.courses?.subjects?.abbreviation}
+									{section?.courses?.course_number}: {section?.courses?.name}
+								</td>
+								<td>{section?.name}</td>
+								<td>{section?.crn}</td>
+								<td>
+									{#if loadingDelete.includes(section?.id ?? -1)}
+										<Moon color="var(--text)" size={25} />
+									{:else}
+										<button
+											on:click={() => unregisterSection(section?.id || -1)}
+										>
+											Delete
+										</button>
+									{/if}
+								</td>
+							</tr>
+						{/each}
+						{#if currSections.length === 0}
+							<tr>
+								<td colspan="5">No courses found for selected semester!</td>
+							</tr>
+						{/if}
+					{/if}
 				</tbody>
 			</table>
 		</section>
@@ -179,7 +188,7 @@
 		}
 	}
 
-	:global(table .action-cell > .wrapper) {
+	:global(table td > .wrapper) {
 		margin: 0 auto;
 	}
 </style>

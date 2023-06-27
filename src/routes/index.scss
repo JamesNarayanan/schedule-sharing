@@ -138,7 +138,12 @@ table {
 			background-color: var(--low-alpha);
 		}
 		&:nth-child(even) td {
-			background-color: var(--med-low-alpha);
+			background-color: var(--med-alpha);
+		}
+		@media (prefers-color-scheme: dark) {
+			&:nth-child(even) td {
+				background-color: var(--med-low-alpha);
+			}
 		}
 		&:last-child {
 			td:first-child {

@@ -11,7 +11,7 @@ export async function load({ locals: { supabase } }) {
 	const { data: sectionData, error: sectionError } = await supabase
 		.from("user_sections")
 		.select(
-			"sections (id, name, crn, courses (name, course_number, subjects (abbreviation)), semesters (id, name))"
+			"sections (id, name, crn, courses (name, course_number, subjects (abbreviation)), semesters (id))"
 		)
 		.eq("user_id", userData.user.id);
 	if (sectionError) {
@@ -28,7 +28,7 @@ export async function load({ locals: { supabase } }) {
 	}
 
 	return {
-		user: { ...userData.user, sections: sectionData },
+		user: { ...userData.user, sections: sectionData.map(data => data.sections) },
 		semesters: semesterData
 	};
 }
