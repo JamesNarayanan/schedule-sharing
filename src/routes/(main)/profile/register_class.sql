@@ -35,7 +35,7 @@ VALUES (crn, section_name, semester_id, course_id)
 RETURNING id INTO section_id;
 END IF;
 -- Insert the user section if it doesn't exist
-INSERT INTO user_sections (user_id, section_id)
+INSERT INTO users_sections (user_id, section_id)
 VALUES (user_id, section_id) ON CONFLICT DO NOTHING;
 END;
 $$ LANGUAGE plpgsql;

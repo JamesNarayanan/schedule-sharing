@@ -23,7 +23,7 @@
 		loadingDelete = [...loadingDelete, section_id];
 
 		const { error } = await supabase
-			.from("user_sections")
+			.from("users_sections")
 			.delete()
 			.match({ section_id, user_id: user.id });
 		if (error) {

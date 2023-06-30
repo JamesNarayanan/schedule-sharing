@@ -4,8 +4,8 @@
 
 	export let data;
 	let group: groupType;
-
-	console.log("group id:", data.group.id);
+	let { users } = data;
+	console.log(users);
 
 	$: {
 		group = data.group;
@@ -19,6 +19,20 @@
 
 <div>
 	<h1>{group.name}</h1>
+	{#each users as user}
+		<p>{user?.name}</p>
+		<ul>
+			{#if user?.sections}
+				{#each user.sections as section}
+					<li>
+						{section.courses?.subjects?.abbreviation}
+						{section.courses?.course_number}: {section.courses?.name} &mdash; {section.name}
+						({section.crn})
+					</li>
+				{/each}
+			{/if}
+		</ul>
+	{/each}
 </div>
 
 <style>

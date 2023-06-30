@@ -9,7 +9,7 @@ export async function load({ locals: { supabase } }) {
 	}
 
 	const { data: sectionData, error: sectionError } = await supabase
-		.from("user_sections")
+		.from("users_sections")
 		.select(
 			"sections (id, name, crn, courses (name, course_number, subjects (abbreviation)), semesters (id))"
 		)

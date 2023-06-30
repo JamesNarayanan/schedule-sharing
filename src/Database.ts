@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -125,7 +125,57 @@ export interface Database {
         }
         Relationships: []
       }
-      user_sections: {
+      users: {
+        Row: {
+          id: string
+          name: string
+        }
+        Insert: {
+          id: string
+          name: string
+        }
+        Update: {
+          id?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      users_groups: {
+        Row: {
+          group_id: string
+          user_id: string
+        }
+        Insert: {
+          group_id: string
+          user_id: string
+        }
+        Update: {
+          group_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_groups_group_id_fkey"
+            columns: ["group_id"]
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_groups_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      users_sections: {
         Row: {
           section_id: number
           user_id: string
@@ -140,13 +190,13 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "user_sections_section_id_fkey"
+            foreignKeyName: "users_sections_section_id_fkey"
             columns: ["section_id"]
             referencedRelation: "sections"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "user_sections_user_id_fkey"
+            foreignKeyName: "users_sections_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
