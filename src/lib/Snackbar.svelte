@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onDestroy } from "svelte";
+	import { fade } from "svelte/transition";
 
 	/**
 	 * Whether or not to show the snackbar
@@ -43,14 +44,16 @@
 	});
 </script>
 
-<div class={`snackbar ${type}`} class:show>
-	<span>{message}</span>
-	<button
-		on:click|stopPropagation={() => {
-			show = false;
-		}}>&#x2715;</button
-	>
-</div>
+{#if show}
+	<div class={`snackbar ${type}`} transition:fade>
+		<span>{message}</span>
+		<button
+			on:click|stopPropagation={() => {
+				show = false;
+			}}>&#x2715;</button
+		>
+	</div>
+{/if}
 
 <style lang="scss">
 	.snackbar {
@@ -69,17 +72,7 @@
 		color: var(--text);
 		background-color: var(--low-alpha);
 
-		--trans-duration: 0.25s;
-		opacity: 0;
-		visibility: hidden;
-		transition: visibility 0s var(--trans-duration), opacity var(--trans-duration) ease-in-out;
 		z-index: 9999;
-
-		&.show {
-			opacity: 1;
-			visibility: visible;
-			transition: visibility 0s 0s, opacity var(--trans-duration) ease-in-out;
-		}
 
 		&.error {
 			color: var(--dark-text);
