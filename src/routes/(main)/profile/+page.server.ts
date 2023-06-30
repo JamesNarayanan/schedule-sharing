@@ -63,10 +63,12 @@ export const actions = {
 				const html = await response.text();
 				const $ = cheerio.load(html);
 				const text = $("th.ddlabel").first().text();
-				if (!text) return;
+				if (!text)
+					throw error(503, { message: "Error fetching section information from OSCAR" });
 
 				const split = text.split(" - ");
-				if (split.length != 4) return;
+				if (split.length != 4)
+					throw error(503, { message: "Error fetching section information from OSCAR" });
 
 				const [course_name, crn, course, section_name] = split;
 				const [subject_abbrev, course_number] = course.split(" ");
