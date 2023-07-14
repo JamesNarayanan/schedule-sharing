@@ -4,8 +4,7 @@
 
 	export let data;
 	let group: groupType;
-	let { users } = data;
-	console.log(users);
+	$: ({ users } = data);
 
 	$: {
 		group = data.group;
