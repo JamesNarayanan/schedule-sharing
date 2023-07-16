@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { groupType } from "$lib/types";
 	import { groupStore } from "$stores/groupStore";
 
 	export let data;
-	let group: groupType;
+	let { group } = data;
 	$: ({ users } = data);
 
 	$: {
@@ -19,17 +18,15 @@
 <div>
 	<h1>{group.name}</h1>
 	{#each users as user}
-		<p>{user?.name}</p>
+		<p>{user.name}</p>
 		<ul>
-			{#if user?.sections}
-				{#each user.sections as section}
-					<li>
-						{section.courses?.subjects?.abbreviation}
-						{section.courses?.course_number}: {section.courses?.name} &mdash; {section.name}
-						({section.crn})
-					</li>
-				{/each}
-			{/if}
+			{#each user.sections as section}
+				<li>
+					{section.courses?.subjects?.abbreviation}
+					{section.courses?.course_number}: {section.courses?.name} &mdash; {section.name}
+					({section.crn})
+				</li>
+			{/each}
 		</ul>
 	{/each}
 </div>

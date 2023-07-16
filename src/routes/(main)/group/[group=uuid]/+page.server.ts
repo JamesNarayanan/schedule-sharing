@@ -23,7 +23,7 @@ export async function load({ params, locals: { supabase } }) {
 		console.error(usersError);
 		throw redirect(303, "/group?not-found");
 	}
-	const users = usersData.map(user => user.users);
+	const users = usersData.map(user => user.users).filter(Boolean);
 
 	return {
 		group,
