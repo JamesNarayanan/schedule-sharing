@@ -8,7 +8,7 @@
 	$: ({ supabase, user, semesters } = data);
 	let semester: { id: number; name: string };
 	$: currSections =
-		semester?.id && user?.sections?.filter(section => section?.semesters?.id === semester?.id);
+		semester?.id && user?.sections.filter(section => section.semesters?.id === semester?.id);
 
 	let snackbarMessage: string = "";
 	let showSnackbar: boolean = false;
@@ -35,7 +35,7 @@
 			showSnackbar = true;
 			snackbarType = "success";
 
-			user.sections = user.sections.filter(section => section?.id !== section_id);
+			user.sections = user.sections.filter(section => section.id !== section_id);
 		}
 		loadingDelete = loadingDelete.filter(id => id !== section_id);
 	}
@@ -105,17 +105,17 @@
 						{#each currSections as section}
 							<tr>
 								<td>
-									{section?.courses?.subjects?.abbreviation}
-									{section?.courses?.course_number}: {section?.courses?.name}
+									{section.courses?.subjects?.abbreviation}
+									{section.courses?.course_number}: {section.courses?.name}
 								</td>
-								<td>{section?.name}</td>
-								<td>{section?.crn}</td>
+								<td>{section.name}</td>
+								<td>{section.crn}</td>
 								<td>
-									{#if loadingDelete.includes(section?.id ?? -1)}
+									{#if loadingDelete.includes(section.id)}
 										<Moon color="var(--text)" size={25} />
 									{:else}
 										<button
-											on:click={() => unregisterSection(section?.id || -1)}
+											on:click={() => unregisterSection(section.id || -1)}
 										>
 											Delete
 										</button>

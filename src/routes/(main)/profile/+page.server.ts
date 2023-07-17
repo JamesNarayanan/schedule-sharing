@@ -28,7 +28,10 @@ export async function load({ locals: { supabase } }) {
 	}
 
 	return {
-		user: { ...userData.user, sections: sectionData.map(data => data.sections) },
+		user: {
+			...userData.user,
+			sections: sectionData.map(data => data.sections).filter(Boolean)
+		},
 		semesters: semesterData
 	};
 }
