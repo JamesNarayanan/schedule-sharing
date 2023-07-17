@@ -1,6 +1,8 @@
-import type { groupType } from "$lib/types";
 import { persisted } from "svelte-local-storage-store";
 import { get } from "svelte/store";
+import type { Database } from "../Database";
+
+type groupType = Database["public"]["Tables"]["groups"]["Row"];
 
 function createStore() {
 	const groupStore = persisted<groupType[]>("groups", []);
