@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import HeaderTitle from "$lib/HeaderTitle.svelte";
-	import SavedGroups from "./savedGroups.svelte";
+	import GroupSelect from "./groupSelect.svelte";
 
 	export let data;
 	let { supabase } = data;
@@ -26,21 +26,20 @@
 	<a href="/profile" class="ul">Profile</a>
 	<button on:click={signOut}>Sign Out</button>
 </HeaderTitle>
-<section><SavedGroups /></section>
+<section><GroupSelect /></section>
 <main>
 	<slot />
 </main>
 
 <style lang="scss">
 	section {
-		display: flex;
-		padding: 0.75rem;
-		border-bottom: 2px solid var(--med-alpha);
-		gap: 0.5rem;
+		padding: 1rem;
+		padding-bottom: 0;
 	}
 
 	main {
 		padding: 1rem;
+		padding-top: 0;
 	}
 
 	a {

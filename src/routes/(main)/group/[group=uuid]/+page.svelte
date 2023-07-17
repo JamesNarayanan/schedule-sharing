@@ -16,7 +16,6 @@
 </svelte:head>
 
 <div>
-	<h1>{group.name}</h1>
 	{#each users as user}
 		<p>{user.name}</p>
 		<ul>
@@ -30,10 +29,3 @@
 		</ul>
 	{/each}
 </div>
-
-<style>
-	h1 {
-		margin: 0;
-		text-align: center;
-	}
-</style>

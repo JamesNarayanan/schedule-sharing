@@ -5,6 +5,7 @@
 
 	--light-bg: #f9f9f9;
 	--light-text: #111;
+	--light-low-low-alpha: rgba(0, 0, 0, 0.02);
 	--light-low-alpha: rgba(0, 0, 0, 0.04);
 	--light-med-low-alpha: rgba(0, 0, 0, 0.06);
 	--light-med-alpha: rgba(0, 0, 0, 0.075);
@@ -13,6 +14,7 @@
 
 	--dark-bg: #13131c;
 	--dark-text: #f9f9f9;
+	--dark-low-low-alpha: rgba(255, 255, 255, 0.04);
 	--dark-low-alpha: rgba(255, 255, 255, 0.075);
 	--dark-med-low-alpha: rgba(255, 255, 255, 0.01);
 	--dark-med-alpha: rgba(255, 255, 255, 0.125);
@@ -21,6 +23,7 @@
 
 	--bg: var(--light-bg);
 	--text: var(--light-text);
+	--low-low-alpha: var(--light-low-low-alpha);
 	--low-alpha: var(--light-low-alpha);
 	--med-low-alpha: var(--light-med-low-alpha);
 	--med-alpha: var(--light-med-alpha);
@@ -34,6 +37,7 @@
 	@media (prefers-color-scheme: dark) {
 		--bg: var(--dark-bg);
 		--text: var(--dark-text);
+		--low-low-alpha: var(--dark-low-low-alpha);
 		--low-alpha: var(--dark-low-alpha);
 		--med-low-alpha: var(--dark-med-low-alpha);
 		--med-alpha: var(--dark-med-alpha);
@@ -142,4 +146,8 @@ table {
 			}
 		}
 	}
+}
+
+.feather {
+	color: red;
 }
