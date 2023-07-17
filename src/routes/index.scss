@@ -32,7 +32,7 @@
 
 	--error: #cb0000;
 	--success: #00e300;
-	--accent: #eea903;
+	--accent: #ffcc00;
 
 	@media (prefers-color-scheme: dark) {
 		--bg: var(--dark-bg);
@@ -135,6 +135,20 @@ a.button {
 		@media (prefers-color-scheme: dark) {
 			&:nth-child(even) td {
 				background-color: var(--med-low-alpha);
+			}
+		}
+		&:first-child {
+			td,
+			th {
+				&:first-child {
+					border-top-left-radius: var(--border-radius);
+				}
+			}
+			td,
+			th {
+				&:last-child {
+					border-top-right-radius: var(--border-radius);
+				}
 			}
 		}
 		&:last-child {
