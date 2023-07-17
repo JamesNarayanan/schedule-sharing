@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION register_class(
 		IN subject_abbrev TEXT,
-		IN course_number INTEGER,
+		IN course_number TEXT,
 		IN course_name TEXT,
 		IN crn INTEGER,
 		IN semester_id INTEGER,

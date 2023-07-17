@@ -87,7 +87,7 @@
 				{/if}
 			</form>
 			<h2>My Courses</h2>
-			<table>
+			<table class="table">
 				<thead>
 					<tr>
 						<th>Course</th>

@@ -75,7 +75,7 @@ export const actions = {
 
 				const { error: registerError, status } = await supabase.rpc("register_class", {
 					course_name,
-					course_number: parseInt(course_number),
+					course_number: course_number,
 					crn: parseInt(crn),
 					section_name,
 					subject_abbrev,

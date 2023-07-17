@@ -11,19 +11,19 @@ export interface Database {
     Tables: {
       courses: {
         Row: {
-          course_number: number
+          course_number: string
           id: number
           name: string
           subject_id: number
         }
         Insert: {
-          course_number: number
+          course_number: string
           id?: number
           name: string
           subject_id: number
         }
         Update: {
-          course_number?: number
+          course_number?: string
           id?: number
           name?: string
           subject_id?: number
@@ -211,7 +211,7 @@ export interface Database {
       register_class: {
         Args: {
           subject_abbrev: string
-          course_number: number
+          course_number: string
           course_name: string
           crn: number
           semester_id: number
