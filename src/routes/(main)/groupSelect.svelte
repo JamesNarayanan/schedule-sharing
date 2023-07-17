@@ -21,6 +21,9 @@
 
 <div class="wrapper">
 	<select on:change={changeGroup}>
+		{#if !groups.some(group => group.id === selectedGroupId)}
+			<option value="" disabled selected> Select Group </option>
+		{/if}
 		{#each groups as group}
 			<option value={group.id} selected={group.id === selectedGroupId}>{group.name}</option>
 		{/each}
@@ -44,7 +47,7 @@
 
 		padding: 0.5rem 2.5rem 0.5rem 0.75rem;
 		border: none;
-		border-radius: 1rem;
+		border-radius: 10px;
 
 		font-size: var(--font-size);
 		font-weight: 600;
