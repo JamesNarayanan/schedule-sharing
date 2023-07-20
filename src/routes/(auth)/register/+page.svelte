@@ -18,6 +18,8 @@
 	let errorMessage: string = "";
 	let showSnackbar: boolean = false;
 
+	const redirect = $page.url.searchParams.get("redirect");
+
 	async function register(event: Event) {
 		loading = true;
 		const { error } = await supabase.auth.signUp({
@@ -35,7 +37,7 @@
 			showSnackbar = true;
 			loading = false;
 		} else {
-			goto($page.url.searchParams.get("redirect") || "/profile");
+			goto(redirect || "/profile");
 		}
 	}
 </script>
@@ -85,7 +87,7 @@
 </form>
 <div class="anchor-wrapper">
 	<p>Already have an account?</p>
-	<a href="/sign-in" class="button">Sign In</a>
+	<a href={"/sign-in" + (redirect ? `?redirect=${redirect}` : "")} class="button">Sign In</a>
 </div>
 
 <Snackbar bind:show={showSnackbar} bind:message={errorMessage} type="error" />
