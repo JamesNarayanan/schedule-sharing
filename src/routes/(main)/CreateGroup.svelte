@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as focusTrap from "focus-trap";
 	import { onMount } from "svelte";
 	import { cubicInOut } from "svelte/easing";
 	import { fade, fly } from "svelte/transition";
@@ -7,6 +8,7 @@
 	let plus: HTMLDivElement | undefined;
 	let transitioning = false;
 	const modalTransDur = 300;
+	let trap: focusTrap.FocusTrap;
 
 	function toggleModal() {
 		if (!plus || transitioning) return;
@@ -14,14 +16,16 @@
 		const pos = plus.getBoundingClientRect();
 		if (!modalOpen) {
 			modalOpen = true;
+			trap.activate();
 			plus.style.position = "fixed";
 			plus.style.top = `${pos.y}px`;
 			plus.style.left = `${pos.x}px`;
 			document.body.style.overflow = "hidden";
 		} else {
 			modalOpen = false;
-			document.body.style.overflow = "";
 			transitioning = true;
+			trap.deactivate();
+			document.body.style.overflow = "";
 			setTimeout(() => {
 				if (!plus) return;
 				transitioning = false;
@@ -38,6 +42,9 @@
 			if (modalOpen && event.key === "Escape") {
 				toggleModal();
 			}
+		});
+		trap = focusTrap.createFocusTrap(plus!, {
+			allowOutsideClick: true
 		});
 	});
 
@@ -80,7 +87,6 @@
 			in:fade={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
 			out:fade={{ duration: modalTransDur / 2 }}
 		>
-			<button class="close" on:click={toggleModal}>&#x2715;</button>
 			{#if creationState === "start"}
 				<div class="form-content" in:flyIn out:flyOut>
 					<button on:click={() => (creationState = "join")}>Join Group</button>
@@ -103,6 +109,7 @@
 					</div>
 				</div>
 			{/if}
+			<button class="close" on:click={toggleModal}>&#x2715;</button>
 		</div>
 	{/if}
 </div>
@@ -153,6 +160,7 @@
 					position: absolute;
 					top: 0.5rem;
 					right: 0.5rem;
+					z-index: 1;
 				}
 
 				.form-content {
@@ -179,10 +187,6 @@
 			border-radius: 10px;
 			background-color: var(--bg);
 			z-index: 999;
-
-			button {
-				outline: none;
-			}
 		}
 
 		&.transitioning {
