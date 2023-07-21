@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { fade } from "svelte/transition";
+	import { crossfade, fade, fly } from "svelte/transition";
+	import { cubicInOut } from "svelte/easing";
 
 	let modalOpen = false;
-	let transitioning = false;
-	const transDur = 400;
 	let plus: HTMLDivElement | undefined;
+	let transitioning = false;
+	const modalTransDur = 400;
 
 	function toggleModal() {
 		if (!plus || transitioning) return;
-		plus.style.transitionDuration = `${transDur}ms`;
+		plus.style.transitionDuration = `${modalTransDur}ms`;
 		const pos = plus.getBoundingClientRect();
 		if (!modalOpen) {
 			modalOpen = true;
@@ -24,14 +25,14 @@
 			setTimeout(() => {
 				if (!plus) return;
 				transitioning = false;
+				creationState = "start";
 				plus.style.top = "";
 				plus.style.left = "";
 				plus.style.position = "relative";
 				plus.style.transitionDuration = "0s";
-			}, transDur);
+			}, modalTransDur);
 		}
 	}
-
 	function handleKeyDown(event: KeyboardEvent) {
 		if (modalOpen && event.key === "Escape") {
 			toggleModal();
@@ -40,25 +41,69 @@
 	onMount(() => {
 		window.addEventListener("keydown", handleKeyDown);
 	});
+
+	let creationState: "start" | "join" | "create" = "start";
+	const flyTransDur = 300;
+	const flyTransDist = 30;
+	function flyIn(node: HTMLElement) {
+		const sign = creationState === "start" ? -1 : 1;
+		return fly(node, {
+			delay: flyTransDur / 2,
+			duration: flyTransDur / 2,
+			easing: cubicInOut,
+			x: sign * flyTransDist,
+			y: 0
+		});
+	}
+	function flyOut(node: HTMLElement) {
+		const sign = creationState === "start" ? 1 : -1;
+		return fly(node, {
+			duration: flyTransDur / 2,
+			easing: cubicInOut,
+			x: sign * flyTransDist,
+			y: 0
+		});
+	}
 </script>
 
 <div class="plus" class:modalOpen class:transitioning bind:this={plus}>
 	{#if !modalOpen}
 		<div
 			class="content closed"
-			in:fade={{ delay: transDur / 2, duration: transDur / 2 }}
-			out:fade={{ duration: transDur / 2 }}
+			in:fade={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
+			out:fade={{ duration: modalTransDur / 2 }}
 		>
 			<button on:click={toggleModal}>+</button>
 		</div>
 	{:else}
 		<div
 			class="content open"
-			in:fade={{ delay: transDur / 2, duration: transDur / 2 }}
-			out:fade={{ duration: transDur / 2 }}
+			in:fade={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
+			out:fade={{ duration: modalTransDur / 2 }}
 		>
-			<button on:click={toggleModal}>&#x2715;</button>
-			<div>Create</div>
+			<button class="close" on:click={toggleModal}>&#x2715;</button>
+			{#if creationState === "start"}
+				<div class="form-content" in:flyIn out:flyOut>
+					<button on:click={() => (creationState = "join")}>Join Group</button>
+					<button on:click={() => (creationState = "create")}>Create Group</button>
+				</div>
+			{:else if creationState === "join"}
+				<div class="form-content" in:flyIn out:flyOut>
+					<input type="text" placeholder="Group Code" />
+					<div>
+						<button on:click={() => (creationState = "start")}>&larr;</button>
+						<button>Join</button>
+					</div>
+				</div>
+			{:else if creationState === "create"}
+				<div class="form-content" in:flyIn out:flyOut>
+					<input type="text" placeholder="Group Name" />
+					<div>
+						<button on:click={() => (creationState = "start")}>&larr;</button>
+						<button>Create</button>
+					</div>
+				</div>
+			{/if}
 		</div>
 	{/if}
 </div>
@@ -67,8 +112,8 @@
 	<div
 		class="backdrop"
 		on:click={toggleModal}
-		in:fade={{ duration: transDur / 2 }}
-		out:fade={{ duration: transDur / 2, delay: transDur / 2 }}
+		in:fade={{ duration: modalTransDur / 2 }}
+		out:fade={{ duration: modalTransDur / 2, delay: modalTransDur / 2 }}
 	/>
 {/if}
 
@@ -105,10 +150,22 @@
 			}
 
 			&.open {
-				button {
+				button.close {
 					position: absolute;
 					top: 0.5rem;
 					right: 0.5rem;
+				}
+
+				.form-content {
+					position: absolute;
+					width: 100%;
+					height: 100%;
+
+					display: flex;
+					flex-direction: column;
+					gap: 0.5rem;
+					justify-content: center;
+					align-items: center;
 				}
 			}
 		}
