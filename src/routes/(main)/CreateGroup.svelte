@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { crossfade, fade, fly } from "svelte/transition";
 	import { cubicInOut } from "svelte/easing";
+	import { fade, fly } from "svelte/transition";
 
 	let modalOpen = false;
 	let plus: HTMLDivElement | undefined;
 	let transitioning = false;
-	const modalTransDur = 400;
+	const modalTransDur = 300;
 
 	function toggleModal() {
 		if (!plus || transitioning) return;
@@ -33,17 +33,16 @@
 			}, modalTransDur);
 		}
 	}
-	function handleKeyDown(event: KeyboardEvent) {
-		if (modalOpen && event.key === "Escape") {
-			toggleModal();
-		}
-	}
 	onMount(() => {
-		window.addEventListener("keydown", handleKeyDown);
+		window.addEventListener("keydown", (event: KeyboardEvent) => {
+			if (modalOpen && event.key === "Escape") {
+				toggleModal();
+			}
+		});
 	});
 
 	let creationState: "start" | "join" | "create" = "start";
-	const flyTransDur = 300;
+	const flyTransDur = 250;
 	const flyTransDist = 30;
 	function flyIn(node: HTMLElement) {
 		const sign = creationState === "start" ? -1 : 1;
