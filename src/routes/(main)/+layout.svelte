@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import HeaderTitle from "$lib/HeaderTitle.svelte";
-	import GroupSelect from "./GroupSelect.svelte";
 
 	export let data;
 	let { supabase } = data;
