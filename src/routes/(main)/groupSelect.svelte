@@ -2,12 +2,14 @@
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { groupStore } from "$stores/groupStore";
+	import { onMount } from "svelte";
 	import { fade } from "svelte/transition";
 
 	let selectedGroupId: string | null = null;
 	$: groups = $groupStore;
 
 	let modalOpen = false;
+	let transitioning = false;
 	const transDur = 400;
 	let plus: HTMLDivElement | undefined;
 
@@ -24,7 +26,7 @@
 	}
 
 	function toggleModal() {
-		if (!plus) return;
+		if (!plus || transitioning) return;
 		plus.style.transitionDuration = `${transDur}ms`;
 		const pos = plus.getBoundingClientRect();
 		if (!modalOpen) {
@@ -32,10 +34,14 @@
 			plus.style.position = "fixed";
 			plus.style.top = `${pos.y}px`;
 			plus.style.left = `${pos.x}px`;
+			document.body.style.overflow = "hidden";
 		} else {
 			modalOpen = false;
+			document.body.style.overflow = "";
+			transitioning = true;
 			setTimeout(() => {
 				if (!plus) return;
+				transitioning = false;
 				plus.style.top = "";
 				plus.style.left = "";
 				plus.style.position = "relative";
@@ -43,6 +49,15 @@
 			}, transDur);
 		}
 	}
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (modalOpen && event.key === "Escape") {
+			toggleModal();
+		}
+	}
+	onMount(() => {
+		window.addEventListener("keydown", handleKeyDown);
+	});
 </script>
 
 <div class="wrapper">
@@ -54,7 +69,7 @@
 			<option value={group.id} selected={group.id === selectedGroupId}>{group.name}</option>
 		{/each}
 	</select>
-	<div class="plus" class:modalOpen bind:this={plus}>
+	<div class="plus" class:modalOpen class:transitioning bind:this={plus}>
 		{#if !modalOpen}
 			<div
 				class="content closed"
@@ -75,6 +90,15 @@
 		{/if}
 	</div>
 </div>
+{#if modalOpen}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div
+		class="backdrop"
+		on:click={toggleModal}
+		in:fade={{ duration: transDur / 2 }}
+		out:fade={{ duration: transDur / 2, delay: transDur / 2 }}
+	/>
+{/if}
 
 <style lang="scss">
 	div.wrapper {
@@ -117,8 +141,9 @@
 		height: calc(var(--font-size) * 1.25 + 1rem);
 		width: calc(var(--font-size) * 1.25 + 1rem);
 
+		background-color: var(--low-alpha);
+
 		transition: all ease-in-out;
-		background-color: var(--med-alpha);
 
 		.content {
 			width: 100%;
@@ -158,12 +183,26 @@
 			width: min(600px, 90%);
 			height: 300px;
 			border-radius: 10px;
-			backdrop-filter: blur(10px);
+			background-color: var(--bg);
 			z-index: 999;
 
 			button {
 				outline: none;
 			}
 		}
+
+		&.transitioning {
+			z-index: 999;
+		}
+	}
+
+	.backdrop {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		z-index: 1;
+		background-color: rgba(0, 0, 0, 0.8);
 	}
 </style>
