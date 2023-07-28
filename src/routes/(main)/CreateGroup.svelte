@@ -94,6 +94,7 @@
 				</div>
 			{:else if creationState === "join"}
 				<div class="form-content" in:flyIn out:flyOut>
+					<h2>Join Group</h2>
 					<input type="text" placeholder="Group Code" />
 					<div>
 						<button on:click={() => (creationState = "start")}>&larr;</button>
@@ -102,6 +103,7 @@
 				</div>
 			{:else if creationState === "create"}
 				<div class="form-content" in:flyIn out:flyOut>
+					<h2>Create Group</h2>
 					<input type="text" placeholder="Group Name" />
 					<div>
 						<button on:click={() => (creationState = "start")}>&larr;</button>
@@ -173,6 +175,12 @@
 					gap: 0.5rem;
 					justify-content: center;
 					align-items: center;
+
+					h2 {
+						margin: 0 0 0.5rem 0;
+						font-size: 2.5rem;
+						font-weight: 600;
+					}
 				}
 			}
 		}
