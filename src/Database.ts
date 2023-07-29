@@ -208,6 +208,24 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      create_join_group: {
+        Args: {
+          group_name: string
+          user_id: string
+        }
+        Returns: string
+      }
+      join_get_group: {
+        Args: {
+          group_id: string
+          user_id: string
+        }
+        Returns: {
+          created_at: string | null
+          id: string
+          name: string
+        }[]
+      }
       register_class: {
         Args: {
           subject_abbrev: string

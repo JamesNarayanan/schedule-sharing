@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
+	import FloatingInput from "$lib/FloatingInput.svelte";
 	import * as focusTrap from "focus-trap";
 	import { onMount } from "svelte";
 	import { cubicInOut } from "svelte/easing";
@@ -70,6 +72,15 @@
 			y: 0
 		});
 	}
+
+	let groupCode = "";
+	function joinGroup() {
+		const uuidRegex = /^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/;
+		if (!uuidRegex.test(groupCode)) return;
+
+		toggleModal();
+		goto(`/group/${groupCode}`);
+	}
 </script>
 
 <div class="plus" class:modalOpen class:transitioning bind:this={plus}>
@@ -95,10 +106,14 @@
 			{:else if creationState === "join"}
 				<div class="form-content" in:flyIn out:flyOut>
 					<h2>Join Group</h2>
-					<input type="text" placeholder="Group Code" />
+					<FloatingInput
+						label="Group Code"
+						placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+						bind:value={groupCode}
+					/>
 					<div>
 						<button on:click={() => (creationState = "start")}>&larr;</button>
-						<button>Join</button>
+						<button on:click={joinGroup}>Join</button>
 					</div>
 				</div>
 			{:else if creationState === "create"}

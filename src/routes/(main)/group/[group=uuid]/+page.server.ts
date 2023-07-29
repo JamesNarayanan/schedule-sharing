@@ -1,11 +1,20 @@
-import { redirect } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 
 export async function load({ params, locals: { supabase } }) {
-	const { data: group, error: groupError } = await supabase
-		.from("groups")
-		.select("*")
-		.eq("id", params.group)
-		.single();
+	const {
+		data: { user },
+		error: userError
+	} = await supabase.auth.getUser();
+
+	if (userError || !user) {
+		console.error(userError);
+		throw error(500, "Error fetching user data");
+	}
+
+	const { data: groups, error: groupError } = await supabase.rpc("join_get_group", {
+		group_id: params.group,
+		user_id: user.id
+	});
 
 	if (groupError) {
 		console.error(groupError);
@@ -26,7 +35,7 @@ export async function load({ params, locals: { supabase } }) {
 	const users = usersData.map(user => user.users).filter(Boolean);
 
 	return {
-		group,
+		group: groups[0],
 		users
 	};
 }
