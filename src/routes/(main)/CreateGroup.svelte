@@ -110,6 +110,7 @@
 						label="Group Code"
 						placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
 						bind:value={groupCode}
+						avoidShift
 					/>
 					<div>
 						<button on:click={() => (creationState = "start")}>&larr;</button>
@@ -119,7 +120,7 @@
 			{:else if creationState === "create"}
 				<div class="form-content" in:flyIn out:flyOut>
 					<h2>Create Group</h2>
-					<input type="text" placeholder="Group Name" />
+					<FloatingInput label="Group Name" avoidShift />
 					<div>
 						<button on:click={() => (creationState = "start")}>&larr;</button>
 						<button>Create</button>
@@ -192,9 +193,13 @@
 					align-items: center;
 
 					h2 {
-						margin: 0 0 0.5rem 0;
+						margin: 0;
 						font-size: 2.5rem;
 						font-weight: 600;
+					}
+
+					:global(input) {
+						width: min(400px, 80vw);
 					}
 				}
 			}

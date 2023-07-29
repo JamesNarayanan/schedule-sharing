@@ -46,6 +46,12 @@
 	 * -1 (or any negative value) means it is not focusable. 0 means that it is focusable after all positive indexed elements
 	 */
 	export let tabindex: number | undefined = undefined;
+	/**
+	 * Whether or not the input will avoid layout shift when clicked on
+	 *
+	 * Defaults to false. When true, additional margin is added to the top of the container to prevent shifting.
+	 */
+	export let avoidShift: boolean = false;
 
 	const inputId = Math.random().toString(36).substring(2);
 
@@ -54,7 +60,7 @@
 	};
 </script>
 
-<div class="floating-input-container">
+<div class="floating-input-container" class:avoidShift>
 	<input
 		id={inputId}
 		value={value || ""}
@@ -110,6 +116,7 @@
 			color: var(--text);
 		}
 
+		&.avoidShift,
 		&:has(input:focus),
 		&:has(input:not(:placeholder-shown)) {
 			margin-top: 1.25rem;
