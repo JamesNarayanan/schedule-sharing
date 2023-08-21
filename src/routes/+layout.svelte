@@ -1,8 +1,12 @@
 <script lang="ts">
+	import { dev } from "$app/environment";
 	import { invalidate } from "$app/navigation";
+	import { inject } from "@vercel/analytics";
 	import { onMount } from "svelte";
 
 	import "./index.scss";
+
+	inject({ mode: dev ? "development" : "production" });
 
 	export let data;
 
