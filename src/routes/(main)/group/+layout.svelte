@@ -1,5 +1,5 @@
 <script>
-	import GroupSelect from "../GroupSelect.svelte";
+	import GroupSelect from "./GroupSelect.svelte";
 </script>
 
 <section>

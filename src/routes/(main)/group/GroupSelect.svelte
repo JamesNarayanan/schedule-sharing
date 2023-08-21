@@ -2,7 +2,7 @@
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { groupStore } from "$stores/groupStore";
-	import CreateGroup from "./CreateGroup.svelte";
+	import CreateGroup from "../CreateGroup.svelte";
 
 	let selectedGroupId: string | null = null;
 	$: groups = $groupStore;
