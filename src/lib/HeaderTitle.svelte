@@ -1,6 +1,10 @@
+<script>
+	import buzz from "$assets/buzz.png";
+</script>
+
 <header>
 	<div>
-		<img src="/src/assets/buzz.png" alt="Buzz" />
+		<img src={buzz} alt="Buzz" />
 		<h1>Schedule Sharing</h1>
 	</div>
 	<div class="right">
