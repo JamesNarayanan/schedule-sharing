@@ -2,6 +2,8 @@
 	import { invalidate } from "$app/navigation";
 	import { onMount } from "svelte";
 
+	import "./index.scss";
+
 	export let data;
 
 	let { supabase, session } = data;
@@ -21,5 +23,3 @@
 </script>
 
 <slot />
-
-<link rel="stylesheet" href="/src/routes/index.scss" />
