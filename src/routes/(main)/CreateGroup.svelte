@@ -123,7 +123,7 @@
 					<FloatingInput label="Group Name" avoidShift />
 					<div>
 						<button on:click={() => (creationState = "start")}>&larr;</button>
-						<button>Create</button>
+						<button disabled>Create</button>
 					</div>
 				</div>
 			{/if}
