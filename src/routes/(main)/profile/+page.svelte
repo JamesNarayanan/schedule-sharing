@@ -1,14 +1,21 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
+	import { page } from "$app/stores";
 	import FloatingInput from "$lib/FloatingInput.svelte";
 	import Snackbar from "$lib/Snackbar.svelte";
+	import { semesterStore } from "$stores/semesterStore";
 	import { Moon } from "svelte-loading-spinners";
 
 	export let data;
 	$: ({ supabase, user, semesters } = data);
-	let semester: { id: number; name: string };
-	$: currSections =
-		semester?.id && user?.sections.filter(section => section.semesters?.id === semester?.id);
+	$: currSemester = $semesterStore;
+	$: {
+		if (currSemester === -1) {
+			semesterStore.set(semesters[0].id);
+			currSemester = semesters[0].id;
+		}
+	}
+	$: currSections = user?.sections.filter(section => section.semesters?.id === currSemester);
 
 	let snackbarMessage: string = "";
 	let showSnackbar: boolean = false;
@@ -45,9 +52,9 @@
 	<div>
 		<section class="semester">
 			<h2>Semester:</h2>
-			<select bind:value={semester} tabindex={1}>
+			<select bind:value={$semesterStore} tabindex={1}>
 				{#each semesters as sem}
-					<option value={sem}>{sem.name}</option>
+					<option value={sem.id}>{sem.name}</option>
 				{/each}
 			</select>
 		</section>
@@ -62,7 +69,7 @@
 				method="POST"
 				use:enhance={({ formData }) => {
 					loadingNewCourses = true;
-					formData.append("semester_id", semester.id.toString());
+					formData.append("semester_id", currSemester.toString());
 					return async ({ result, update }) => {
 						loadingNewCourses = false;
 						if (result.type === "error") {
