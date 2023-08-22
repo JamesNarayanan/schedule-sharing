@@ -13,9 +13,7 @@ function createStore() {
 	 */
 	function addGroup(group: groupType) {
 		if (get(groupStore).find(g => g.id === group.id)) return;
-		groupStore.update(groups => {
-			return [...groups, group];
-		});
+		groupStore.update(groups => [...groups, group]);
 	}
 
 	/**
@@ -23,9 +21,7 @@ function createStore() {
 	 * @param groupId The id of the group to remove from the store
 	 */
 	function removeGroup(groupId: string) {
-		groupStore.update(groups => {
-			return groups.filter(group => group.id !== groupId);
-		});
+		groupStore.update(groups => groups.filter(group => group.id !== groupId));
 	}
 
 	return {

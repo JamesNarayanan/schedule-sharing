@@ -109,6 +109,10 @@ a.button {
 	&:focus {
 		outline: 2px solid var(--text);
 	}
+	&:disabled {
+		opacity: 0.5;
+		cursor: default;
+	}
 }
 
 .table {

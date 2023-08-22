@@ -21,8 +21,8 @@ dependencies:
     specifier: ^7.5.2
     version: 7.5.2
   svelte-local-storage-store:
-    specifier: ^0.5.0
-    version: 0.5.0(svelte@3.59.1)
+    specifier: ^0.6.0
+    version: 0.6.0(svelte@3.59.1)
 
 devDependencies:
   '@sveltejs/adapter-auto':
@@ -2497,8 +2497,8 @@ packages:
     resolution: {integrity: sha512-vKaW71QMCBcTNijAGc0mUl8k3DQ66iYmp6MB8BMGCXyWk82bTrcLy8FOnSm9fE+8q6TwzD6PLUoYFHt0II93Xw==}
     dev: true
 
-  /svelte-local-storage-store@0.5.0(svelte@3.59.1):
-    resolution: {integrity: sha512-SEDrpapeia6fUqta+r1NvSLlJYPkZ4pBcl15EYIOSPNzy6vhpoXu8cnzUDmZxsWl7fZGAHxrVH9UyZCbyO4W+g==}
+  /svelte-local-storage-store@0.6.0(svelte@3.59.1):
+    resolution: {integrity: sha512-UbCY/yT/YUadU5IX/gZkoRQnA+ebFZHKKQjlJvfWHnBj3CPe9sNn8ndxYz/xy4LUzGjuBLq8+wH5RYK54ba3wA==}
     engines: {node: '>=0.14'}
     peerDependencies:
       svelte: ^3.48.0 || ^4.0.0

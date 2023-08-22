@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { groupStore } from "$stores/groupStore";
+	import { semesterStore } from "$stores/semesterStore";
+	import { Moon } from "svelte-loading-spinners";
 
 	export let data;
 	let { group } = data;
 	$: ({ users } = data);
+	let currSemester = -1;
+	$: currSemester = $semesterStore;
 	/** 
 		Contains the formatted section data in the following format:
 
@@ -26,9 +30,15 @@
 				const subject = section.courses?.subjects?.abbreviation;
 				const courseNumber = section.courses?.course_number;
 				const sectionName = section.name;
-				const crn = section.crn;
+				const semester = section.semesters;
 
-				if (!subject || !courseNumber) continue;
+				if (
+					!subject ||
+					!courseNumber ||
+					!semester ||
+					(currSemester !== -1 && semester.id !== currSemester)
+				)
+					continue;
 
 				if (!tableData[subject]) {
 					tableData[subject] = {};
@@ -52,32 +62,40 @@
 	<title>{group.name} • GT Schedule Sharing</title>
 </svelte:head>
 
-<div>
-	<table class="table course-data">
-		<tbody>
-			{#each Object.entries(tableData) as [subject, courses]}
-				<tr>
-					<th>{subject}</th>
-					{#each Object.entries(courses) as [courseNumber, sections]}
-						<td>
-							<h3>{courseNumber}</h3>
-							<table class="table section-data">
-								{#each Object.entries(sections) as [sectionName, users]}
-									<tr>
-										<th>{sectionName}</th>
-										{#each users as user}
-											<td>{user.name}</td>
+{#if currSemester > 0}
+	<div>
+		{#if Object.keys(tableData).length > 0}
+			<table class="table course-data">
+				<tbody>
+					{#each Object.entries(tableData) as [subject, courses]}
+						<tr>
+							<th>{subject}</th>
+							{#each Object.entries(courses) as [courseNumber, sections]}
+								<td>
+									<h3>{courseNumber}</h3>
+									<table class="table section-data">
+										{#each Object.entries(sections) as [sectionName, users]}
+											<tr>
+												<th>{sectionName}</th>
+												{#each users as user}
+													<td>{user.name}</td>
+												{/each}
+											</tr>
 										{/each}
-									</tr>
-								{/each}
-							</table>
-						</td>
+									</table>
+								</td>
+							{/each}
+						</tr>
 					{/each}
-				</tr>
-			{/each}
-		</tbody>
-	</table>
-</div>
+				</tbody>
+			</table>
+		{:else}
+			<h1>No data to display</h1>
+		{/if}
+	</div>
+{:else}
+	<Moon color="var(--text)" size={50} />
+{/if}
 
 <style lang="scss">
 	table.course-data {

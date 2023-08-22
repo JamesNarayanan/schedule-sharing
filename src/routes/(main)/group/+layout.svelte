@@ -1,14 +1,26 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
+	import { goto, invalidateAll } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { groupStore } from "$stores/groupStore";
+	import { semesterStore } from "$stores/semesterStore";
 	import CreateGroup from "../CreateGroup.svelte";
 
+	export let data;
 	let selectedGroupId: string | null = null;
 	$: groups = $groupStore;
+	let { semesters } = data;
+	$: currSemester = $semesterStore;
 
 	$: {
 		selectedGroupId = $page.url.pathname.substring(7);
+	}
+
+	// This results in flickering but is necessary for to set the default for the first visit
+	$: {
+		if (currSemester === -1) {
+			semesterStore.set(semesters[0].id);
+			currSemester = semesters[0].id;
+		}
 	}
 
 	function changeGroup(event: Event) {
@@ -16,6 +28,13 @@
 		const groupId = select.value;
 		if (groupId) {
 			goto(`/group/${groupId}`);
+		}
+	}
+	function changeSemester(event: Event) {
+		const select = event.target as HTMLSelectElement;
+		const semesterId = Number(select.value);
+		if (semesterId != currSemester) {
+			semesterStore.set(semesterId);
 		}
 	}
 </script>
@@ -27,9 +46,19 @@
 				<option value="" disabled selected> Select Group </option>
 			{/if}
 			{#each groups as group}
-				<option value={group.id} selected={group.id === selectedGroupId}
-					>{group.name}</option
-				>
+				<option value={group.id} selected={group.id === selectedGroupId}>
+					{group.name}
+				</option>
+			{/each}
+		</select>
+		<select on:change={changeSemester}>
+			{#if currSemester < 1}
+				<option value="" disabled selected>Select Semester</option>
+			{/if}
+			{#each semesters as semester}
+				<option value={semester.id} selected={semester.id === currSemester}>
+					{semester.name}
+				</option>
 			{/each}
 		</select>
 		<CreateGroup />
@@ -49,7 +78,7 @@
 		align-items: center;
 		gap: 0.5rem;
 
-		--font-size: 2rem;
+		--font-size: 1.5rem;
 	}
 
 	select {
@@ -69,7 +98,7 @@
 		-webkit-appearance: none; /* Safari and Chrome */
 		appearance: none;
 
-		&:hover {
+		&:not(:disabled):hover {
 			background-color: var(--med-alpha);
 		}
 

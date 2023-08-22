@@ -42,6 +42,6 @@
 		"@vercel/analytics": "^1.0.2",
 		"cheerio": "1.0.0-rc.12",
 		"focus-trap": "^7.5.2",
-		"svelte-local-storage-store": "^0.5.0"
+		"svelte-local-storage-store": "^0.6.0"
 	}
 }
