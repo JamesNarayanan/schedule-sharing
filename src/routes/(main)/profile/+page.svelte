@@ -10,9 +10,8 @@
 	$: ({ supabase, user, semesters } = data);
 	$: currSemester = $semesterStore;
 	$: {
-		if (currSemester === -1) {
-			semesterStore.set(semesters[0].id);
-			currSemester = semesters[0].id;
+		if (!currSemester) {
+			semesterStore.set(0);
 		}
 	}
 	$: currSections = user?.sections.filter(section => section.semesters?.id === currSemester);
@@ -52,7 +51,10 @@
 	<div>
 		<section class="semester">
 			<h2>Semester:</h2>
-			<select bind:value={$semesterStore} tabindex={1}>
+			<select bind:value={$semesterStore} tabindex={1} disabled={currSemester === -1}>
+				{#if currSemester < 1}
+					<option value={0} disabled selected>Select Semester</option>
+				{/if}
 				{#each semesters as sem}
 					<option value={sem.id}>{sem.name}</option>
 				{/each}

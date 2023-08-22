@@ -10,17 +10,14 @@
 	$: groups = $groupStore;
 	let { semesters } = data;
 	$: currSemester = $semesterStore;
+	$: {
+		if (!currSemester) {
+			semesterStore.set(0);
+		}
+	}
 
 	$: {
 		selectedGroupId = $page.url.pathname.substring(7);
-	}
-
-	// This results in flickering but is necessary for to set the default for the first visit
-	$: {
-		if (currSemester === -1) {
-			semesterStore.set(semesters[0].id);
-			currSemester = semesters[0].id;
-		}
 	}
 
 	function changeGroup(event: Event) {
@@ -28,13 +25,6 @@
 		const groupId = select.value;
 		if (groupId) {
 			goto(`/group/${groupId}`);
-		}
-	}
-	function changeSemester(event: Event) {
-		const select = event.target as HTMLSelectElement;
-		const semesterId = Number(select.value);
-		if (semesterId != currSemester) {
-			semesterStore.set(semesterId);
 		}
 	}
 </script>
@@ -51,12 +41,12 @@
 				</option>
 			{/each}
 		</select>
-		<select on:change={changeSemester}>
+		<select bind:value={$semesterStore} disabled={currSemester === -1}>
 			{#if currSemester < 1}
-				<option value="" disabled selected>Select Semester</option>
+				<option value={0} disabled selected>Select Semester</option>
 			{/if}
 			{#each semesters as semester}
-				<option value={semester.id} selected={semester.id === currSemester}>
+				<option value={semester.id}>
 					{semester.name}
 				</option>
 			{/each}

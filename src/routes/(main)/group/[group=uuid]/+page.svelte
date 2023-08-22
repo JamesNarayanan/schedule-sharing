@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { groupStore } from "$stores/groupStore";
 	import { semesterStore } from "$stores/semesterStore";
-	import { Moon } from "svelte-loading-spinners";
 
 	export let data;
 	let { group } = data;
 	$: ({ users } = data);
-	let currSemester = -1;
 	$: currSemester = $semesterStore;
 	/** 
 		Contains the formatted section data in the following format:
@@ -36,7 +34,7 @@
 					!subject ||
 					!courseNumber ||
 					!semester ||
-					(currSemester !== -1 && semester.id !== currSemester)
+					(currSemester > 0 && semester.id !== currSemester)
 				)
 					continue;
 
@@ -93,8 +91,6 @@
 			<h1>No data to display</h1>
 		{/if}
 	</div>
-{:else}
-	<Moon color="var(--text)" size={50} />
 {/if}
 
 <style lang="scss">
