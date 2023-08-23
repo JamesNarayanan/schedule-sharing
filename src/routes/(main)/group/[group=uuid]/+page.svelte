@@ -65,17 +65,17 @@
 		{#if Object.keys(tableData).length > 0}
 			<table class="table course-data">
 				<tbody>
-					{#each Object.entries(tableData) as [subject, courses]}
+					{#each Object.entries(tableData).sort( ([subA, _A], [subB, _B]) => subA.localeCompare(subB) ) as [subject, courses]}
 						<tr>
 							<th>{subject}</th>
-							{#each Object.entries(courses) as [courseNumber, sections]}
+							{#each Object.entries(courses).sort( ([courseNumA, _A], [courseNumB, _B]) => courseNumA.localeCompare(courseNumB) ) as [courseNumber, sections]}
 								<td>
 									<h3>{courseNumber}</h3>
 									<table class="table section-data">
-										{#each Object.entries(sections) as [sectionName, users]}
+										{#each Object.entries(sections).sort( ([secNameA, _A], [secNameB, _B]) => secNameA.localeCompare(secNameB) ) as [sectionName, users]}
 											<tr>
 												<th>{sectionName}</th>
-												{#each users as user}
+												{#each users.sort( (userA, userB) => userA.name.localeCompare(userB.name) ) as user}
 													<td>{user.name}</td>
 												{/each}
 											</tr>
