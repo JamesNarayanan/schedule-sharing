@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, invalidateAll } from "$app/navigation";
+	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { groupStore } from "$stores/groupStore";
 	import { semesterStore } from "$stores/semesterStore";
@@ -10,11 +10,6 @@
 	$: groups = $groupStore;
 	let { semesters } = data;
 	$: currSemester = $semesterStore;
-	$: {
-		if (!currSemester) {
-			semesterStore.set(0);
-		}
-	}
 
 	$: {
 		selectedGroupId = $page.url.pathname.substring(7);
@@ -41,9 +36,9 @@
 				</option>
 			{/each}
 		</select>
-		<select bind:value={$semesterStore} disabled={currSemester === -1}>
+		<select bind:value={$semesterStore} disabled={currSemester === 0}>
 			{#if currSemester < 1}
-				<option value={0} disabled selected>Select Semester</option>
+				<option value={-1} disabled selected>Select Semester</option>
 			{/if}
 			{#each semesters as semester}
 				<option value={semester.id}>

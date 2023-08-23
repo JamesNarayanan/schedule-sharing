@@ -1,13 +1,16 @@
-import { persisted } from "svelte-local-storage-store";
-import type { Database } from "../Database";
-
-type semesterIdType = Database["public"]["Tables"]["semesters"]["Row"]["id"];
+import { browser } from "$app/environment";
+import { writable } from "svelte/store";
 
 /**
  * The store for the current semester
  *
- * - A value of -1 indicates that data is loading from local storage
- * - A value of 0 indicates that no semester is selected
+ * - A value of 0 indicates that data is loading from local storage
+ * - A value of -1 indicates that no semester is selected
  * - All other values indicate the id of the selected semester
  */
-export const semesterStore = persisted<semesterIdType>("semester", -1);
+export const semesterStore = writable<number>(
+	browser ? Number(localStorage.getItem("semester")) || -1 : 0
+);
+semesterStore.subscribe(val => {
+	if (browser) return (localStorage.semester = val);
+});

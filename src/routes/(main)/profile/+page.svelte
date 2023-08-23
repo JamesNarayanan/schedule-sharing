@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import { page } from "$app/stores";
 	import FloatingInput from "$lib/FloatingInput.svelte";
 	import Snackbar from "$lib/Snackbar.svelte";
 	import { semesterStore } from "$stores/semesterStore";
@@ -9,11 +8,6 @@
 	export let data;
 	$: ({ supabase, user, semesters } = data);
 	$: currSemester = $semesterStore;
-	$: {
-		if (!currSemester) {
-			semesterStore.set(0);
-		}
-	}
 	$: currSections = user?.sections.filter(section => section.semesters?.id === currSemester);
 
 	let snackbarMessage: string = "";
@@ -51,9 +45,9 @@
 	<div>
 		<section class="semester">
 			<h2>Semester:</h2>
-			<select bind:value={$semesterStore} tabindex={1} disabled={currSemester === -1}>
+			<select bind:value={$semesterStore} tabindex={1} disabled={currSemester === 0}>
 				{#if currSemester < 1}
-					<option value={0} disabled selected>Select Semester</option>
+					<option value={-1} disabled selected>Select Semester</option>
 				{/if}
 				{#each semesters as sem}
 					<option value={sem.id}>{sem.name}</option>
