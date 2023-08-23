@@ -44,7 +44,7 @@
 				)
 					continue;
 
-				courseNames[courseNumber] = section.courses?.name || "";
+				courseNames[subject + courseNumber] = section.courses?.name || "";
 
 				if (!tableData[subject]) {
 					tableData[subject] = {};
@@ -80,7 +80,9 @@
 								<td>
 									<div class="course-details">
 										<h3>{courseNumber}</h3>
-										<span class="tooltip">{courseNames[courseNumber]}</span>
+										<span class="tooltip"
+											>{courseNames[subject + courseNumber]}</span
+										>
 									</div>
 									<table class="table section-data">
 										{#each Object.entries(sections).sort( ([secNameA, _A], [secNameB, _B]) => secNameA.localeCompare(secNameB) ) as [sectionName, users]}
