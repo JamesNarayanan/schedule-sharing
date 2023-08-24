@@ -19,9 +19,15 @@
 	/**
 	 * Contains the course names for each course number
 	 *
-	 * number: name
+	 * subject + number: name
 	 */
 	const courseNames: Record<string, string> = {};
+	/**
+	 * Contains the subject names for each subject abbreviation
+	 *
+	 * abbreviation: name
+	 */
+	const subjectNames: Record<string, string> = {};
 
 	$: {
 		group = data.group;
@@ -45,6 +51,7 @@
 					continue;
 
 				courseNames[subject + courseNumber] = section.courses?.name || "";
+				subjectNames[subject] = section.courses?.subjects?.name || "";
 
 				if (!tableData[subject]) {
 					tableData[subject] = {};
@@ -62,6 +69,41 @@
 			}
 		}
 	}
+
+	/** Number of subjects currently toggled open */
+	let toggleCount = 0;
+	/** Number of subjects in the table */
+	$: subjectCount = Object.keys(tableData).length;
+	function toggleSubject(subject: string) {
+		const expander = document.querySelector(`.expander-${subject}`);
+		const toggle = document.querySelector(`.toggle-${subject}`);
+
+		if (!expander || !toggle) return;
+
+		const add = expander.classList.toggle("expanded");
+		toggle.classList.toggle("toggled");
+		toggleCount += add ? 1 : -1;
+	}
+	function toggleAll() {
+		const expanders = document.querySelectorAll("[class|='expander']");
+		const toggles = document.querySelectorAll("[class|='toggle']");
+
+		if (!expanders || !toggles) return;
+
+		if (toggleCount == expanders.length) {
+			for (let i = 0; i < expanders.length; i++) {
+				expanders[i].classList.remove("expanded");
+				toggles[i].classList.remove("toggled");
+			}
+			toggleCount = 0;
+		} else {
+			for (let i = 0; i < expanders.length; i++) {
+				expanders[i].classList.add("expanded");
+				toggles[i].classList.add("toggled");
+			}
+			toggleCount = expanders.length;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -69,37 +111,41 @@
 </svelte:head>
 
 {#if currSemester > 0}
-	<div>
-		{#if Object.keys(tableData).length > 0}
-			<table class="table course-data">
-				<tbody>
-					{#each Object.entries(tableData).sort( ([subA, _A], [subB, _B]) => subA.localeCompare(subB) ) as [subject, courses]}
-						<tr>
-							<th>{subject}</th>
-							{#each Object.entries(courses).sort( ([courseNumA, _A], [courseNumB, _B]) => courseNumA.localeCompare(courseNumB) ) as [courseNumber, sections]}
-								<td>
-									<div class="course-details">
-										<h3>{courseNumber}</h3>
-										<span class="tooltip"
-											>{courseNames[subject + courseNumber]}</span
-										>
-									</div>
-									<table class="table section-data">
-										{#each Object.entries(sections).sort( ([secNameA, _A], [secNameB, _B]) => secNameA.localeCompare(secNameB) ) as [sectionName, users]}
-											<tr>
-												<th>{sectionName}</th>
-												{#each users.sort( (userA, userB) => userA.name.localeCompare(userB.name) ) as user}
-													<td>{user.name}</td>
-												{/each}
-											</tr>
-										{/each}
-									</table>
-								</td>
-							{/each}
-						</tr>
-					{/each}
-				</tbody>
-			</table>
+	<div class="group-page">
+		{#if subjectCount > 0}
+			<button class="toggle-all" on:click={() => toggleAll()}>
+				{toggleCount == subjectCount ? "Collapse All" : "Expand All"}
+			</button>
+			{#each Object.entries(tableData).sort( ([subA, _A], [subB, _B]) => subA.localeCompare(subB) ) as [subject, courses]}
+				<button class="subject-wrapper" on:click={() => toggleSubject(subject)}>
+					<div class="toggle-{subject}">&#9654;</div>
+					<h3>{subject} {"\u2013"} {subjectNames[subject]}</h3>
+				</button>
+				<div class="expander-{subject}">
+					<table class="table courses">
+						{#each Object.entries(courses).sort( ([courseNumA, _A], [courseNumB, _B]) => courseNumA.localeCompare(courseNumB) ) as [courseNumber, sections]}
+							<tr>
+								<th class="course-details" rowspan="2">
+									<h3>{courseNumber}</h3>
+									<span class="tooltip"
+										>{courseNames[subject + courseNumber]}</span
+									>
+								</th>
+								{#each Object.entries(sections).sort( ([secNameA, _A], [secNameB, _B]) => secNameA.localeCompare(secNameB) ) as [sectionName, users]}
+									<th colspan={users.length}>{sectionName}</th>
+								{/each}
+							</tr>
+							<tr>
+								{#each Object.entries(sections).sort( ([secNameA, _A], [secNameB, _B]) => secNameA.localeCompare(secNameB) ) as [_sectionName, users]}
+									{#each users.sort( (userA, userB) => userA.name.localeCompare(userB.name) ) as user}
+										<td>{user.name}</td>
+									{/each}
+								{/each}
+							</tr>
+						{/each}
+					</table>
+				</div>
+			{/each}
 		{:else}
 			<h1>No data to display</h1>
 		{/if}
@@ -107,82 +153,88 @@
 {/if}
 
 <style lang="scss">
-	table.course-data {
-		text-align: center;
+	.group-page {
+		--trans-dur: 0.2s;
 
-		td {
-			padding: 0;
+		.toggle-all {
+			margin-bottom: -0.75rem;
+			font-size: 1.25rem;
+		}
 
-			.course-details {
-				position: relative;
+		.subject-wrapper {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			margin-top: 1rem;
+			font-size: 2rem;
+			background: none;
 
-				h3 {
-					margin: 0;
-					padding: 0 0.5rem;
-					border-bottom: 2px solid var(--med-alpha);
-				}
-				.tooltip {
-					--padding-top: 0.75rem;
-					position: absolute;
-					max-width: 150px;
-					top: 26px;
-					padding: 0.5rem var(--padding-top);
-					border-radius: 0.5rem;
-					transform: translateX(-50%);
-					font-size: 0.8rem;
-					color: var(--text);
-					background-color: var(--bg);
-					z-index: 2;
+			// Show outline only when tabbing
+			&:focus:not(:focus-visible) {
+				outline: none;
+			}
 
-					opacity: 0;
-					transition: opacity 0.2s;
-					pointer-events: none;
+			[class|="toggle"] {
+				font-size: 1.25rem;
+				transition: transform var(--trans-dur);
 
-					&::before {
-						content: "";
-						position: absolute;
-						left: 50%;
-						transform: translate(-50%, calc(-1 * var(--padding-top) + 2px))
-							rotate(45deg);
-						background-color: var(--bg);
-						padding: 4px;
-						z-index: 1;
-					}
-				}
-
-				h3:hover + .tooltip {
-					opacity: 1;
+				&.toggled {
+					transform: rotate(90deg);
 				}
 			}
 
-			table.section-data {
-				width: 100%;
-				border-radius: 0;
-				background-color: transparent;
+			h3 {
+				margin: 0;
+			}
+		}
+		[class|="expander"] {
+			display: grid;
+			grid-template-rows: 0fr;
+			transition: grid-template-rows var(--trans-dur);
+			overflow: hidden;
 
-				tr {
-					display: table-cell;
+			&.expanded {
+				grid-template-rows: 1fr;
+			}
 
-					&:not(:last-child) {
-						border-right: 2px solid var(--med-alpha);
+			table.courses {
+				text-align: center;
+				overflow: hidden;
+
+				.course-details {
+					position: relative;
+
+					.tooltip {
+						--padding-top: 0.75rem;
+						position: absolute;
+						max-width: 150px;
+						top: 60px;
+						padding: 0.5rem var(--padding-top);
+						border-radius: 0.5rem;
+						transform: translateX(-50%);
+						font-size: 0.8rem;
+						color: var(--text);
+						background-color: var(--bg);
+						z-index: 2;
+
+						opacity: 0;
+						transition: opacity 0.2s;
+						pointer-events: none;
+
+						&::before {
+							content: "";
+							position: absolute;
+							left: 50%;
+							transform: translate(-50%, calc(-1 * var(--padding-top) + 2px))
+								rotate(45deg);
+							background-color: var(--bg);
+							padding: 4px;
+							z-index: 1;
+						}
 					}
 
-					td,
-					th {
-						display: block;
-
-						padding: 0.25rem 0.5rem;
-						border: none;
-						border-radius: 0;
-						background: none;
-					}
-
-					th {
-						border-bottom: 2px solid var(--med-alpha);
-					}
-
-					td:not(:last-child) {
-						border-bottom: 1px solid var(--med-alpha);
+					h3:hover + .tooltip {
+						opacity: 1;
 					}
 				}
 			}

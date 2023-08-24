@@ -24,7 +24,7 @@ export async function load({ params, locals: { supabase } }) {
 	const { data: usersData, error: usersError } = await supabase
 		.from("users_groups")
 		.select(
-			"users (*, sections (id, name, crn, courses (name, course_number, subjects (abbreviation)), semesters (id)))"
+			"users (*, sections (id, name, crn, courses (name, course_number, subjects (abbreviation, name)), semesters (id)))"
 		)
 		.eq("group_id", params.group);
 
