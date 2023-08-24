@@ -70,15 +70,40 @@
 		}
 	}
 
-	const toggleSubject = (subject: string) => {
+	/** Number of subjects currently toggled open */
+	let toggleCount = 0;
+	/** Number of subjects in the table */
+	$: subjectCount = Object.keys(tableData).length;
+	function toggleSubject(subject: string) {
 		const expander = document.querySelector(`.expander-${subject}`);
 		const toggle = document.querySelector(`.toggle-${subject}`);
 
 		if (!expander || !toggle) return;
 
-		expander.classList.toggle("expanded");
+		const add = expander.classList.toggle("expanded");
 		toggle.classList.toggle("toggled");
-	};
+		toggleCount += add ? 1 : -1;
+	}
+	function toggleAll() {
+		const expanders = document.querySelectorAll("[class|='expander']");
+		const toggles = document.querySelectorAll("[class|='toggle']");
+
+		if (!expanders || !toggles) return;
+
+		if (toggleCount == expanders.length) {
+			for (let i = 0; i < expanders.length; i++) {
+				expanders[i].classList.remove("expanded");
+				toggles[i].classList.remove("toggled");
+			}
+			toggleCount = 0;
+		} else {
+			for (let i = 0; i < expanders.length; i++) {
+				expanders[i].classList.add("expanded");
+				toggles[i].classList.add("toggled");
+			}
+			toggleCount = expanders.length;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -87,7 +112,10 @@
 
 {#if currSemester > 0}
 	<div class="group-page">
-		{#if Object.keys(tableData).length > 0}
+		{#if subjectCount > 0}
+			<button class="toggle-all" on:click={() => toggleAll()}>
+				{toggleCount == subjectCount ? "Collapse All" : "Expand All"}
+			</button>
 			{#each Object.entries(tableData).sort( ([subA, _A], [subB, _B]) => subA.localeCompare(subB) ) as [subject, courses]}
 				<button class="subject-wrapper" on:click={() => toggleSubject(subject)}>
 					<div class="toggle-{subject}">&#9654;</div>
@@ -127,6 +155,11 @@
 <style lang="scss">
 	.group-page {
 		--trans-dur: 0.2s;
+
+		.toggle-all {
+			margin-bottom: -0.75rem;
+			font-size: 1.25rem;
+		}
 
 		.subject-wrapper {
 			display: flex;
