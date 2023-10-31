@@ -26,7 +26,7 @@
 
 <section>
 	<div class="wrapper">
-		<select on:change={changeGroup}>
+		<select on:change={changeGroup} class="custom-select">
 			{#if !groups.some(group => group.id === selectedGroupId)}
 				<option value="" disabled selected> Select Group </option>
 			{/if}
@@ -36,7 +36,7 @@
 				</option>
 			{/each}
 		</select>
-		<select bind:value={$semesterStore} disabled={currSemester === 0}>
+		<select bind:value={$semesterStore} disabled={currSemester === 0} class="custom-select">
 			{#if currSemester < 1}
 				<option value={-1} disabled selected>Select Semester</option>
 			{/if}
@@ -62,33 +62,6 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-
-		--font-size: 1.5rem;
-	}
-
-	select {
-		background: url("/src/assets/arrow-down-dark.svg") no-repeat var(--low-alpha);
-		background-size: var(--font-size);
-		background-position: calc(100% - 0.5rem) center;
-
-		padding: 0.5rem 2.5rem 0.5rem 0.75rem;
-		border: none;
-		border-radius: 10px;
-
-		font-size: var(--font-size);
-		font-weight: 600;
-		transition: background-color 0.2s ease-in-out;
-
-		-moz-appearance: none; /* Firefox */
-		-webkit-appearance: none; /* Safari and Chrome */
-		appearance: none;
-
-		&:not(:disabled):hover {
-			background-color: var(--med-alpha);
-		}
-
-		@media (prefers-color-scheme: dark) {
-			background-image: url("/src/assets/arrow-down.svg");
-		}
+		font-size: 1.5rem;
 	}
 </style>

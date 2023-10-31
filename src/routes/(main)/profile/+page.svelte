@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
 	import FloatingInput from "$lib/FloatingInput.svelte";
+	import Loading from "$lib/Loading.svelte";
 	import Snackbar from "$lib/Snackbar.svelte";
 	import { semesterStore } from "$stores/semesterStore";
-	import { Moon } from "svelte-loading-spinners";
 
 	export let data;
 	$: ({ supabase, user, semesters } = data);
@@ -43,9 +43,15 @@
 
 <div class="section-wrapper">
 	<div>
+		<h1>My Courses</h1>
 		<section class="semester">
 			<h2>Semester:</h2>
-			<select bind:value={$semesterStore} tabindex={1} disabled={currSemester === 0}>
+			<select
+				bind:value={$semesterStore}
+				tabindex={1}
+				disabled={currSemester === 0}
+				class="custom-select"
+			>
 				{#if currSemester < 1}
 					<option value={-1} disabled selected>Select Semester</option>
 				{/if}
@@ -84,56 +90,62 @@
 			>
 				<FloatingInput label="CRNs" tabindex={2} />
 				{#if loadingNewCourses}
-					<Moon color="var(--text)" size={25} />
+					<Loading />
 				{:else}
 					<button tabindex={3}>Add Courses</button>
 				{/if}
 			</form>
-			<h2>My Courses</h2>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Course</th>
-						<th>Section</th>
-						<th>CRN</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#if !currSections}
+			{#if currSemester == 0}
+				<div class="loading-table"><Loading size={35} /></div>
+			{:else if currSemester == -1}
+				<h3>Select a semester above to view your courses!</h3>
+			{:else}
+				<h2>My Courses</h2>
+				<table class="table">
+					<thead>
 						<tr>
-							<td colspan="5"><Moon color="var(--text)" size={25} /></td>
+							<th>Course</th>
+							<th>Section</th>
+							<th>CRN</th>
+							<th>Actions</th>
 						</tr>
-					{:else}
-						{#each currSections as section}
+					</thead>
+					<tbody>
+						{#if !currSections}
 							<tr>
-								<td>
-									{section.courses?.subjects?.abbreviation}
-									{section.courses?.course_number}: {section.courses?.name}
-								</td>
-								<td>{section.name}</td>
-								<td>{section.crn}</td>
-								<td>
-									{#if loadingDelete.includes(section.id)}
-										<Moon color="var(--text)" size={25} />
-									{:else}
-										<button
-											on:click={() => unregisterSection(section.id || -1)}
-										>
-											Delete
-										</button>
-									{/if}
-								</td>
+								<td colspan="5"><Loading /></td>
 							</tr>
-						{/each}
-						{#if currSections.length === 0}
-							<tr>
-								<td colspan="5">No courses found for selected semester!</td>
-							</tr>
+						{:else}
+							{#each currSections as section}
+								<tr>
+									<td>
+										{section.courses?.subjects?.abbreviation}
+										{section.courses?.course_number}: {section.courses?.name}
+									</td>
+									<td>{section.name}</td>
+									<td>{section.crn}</td>
+									<td>
+										{#if loadingDelete.includes(section.id)}
+											<Loading />
+										{:else}
+											<button
+												on:click={() => unregisterSection(section.id || -1)}
+											>
+												Delete
+											</button>
+										{/if}
+									</td>
+								</tr>
+							{/each}
+							{#if currSections.length === 0}
+								<tr>
+									<td colspan="5">No courses found for selected semester!</td>
+								</tr>
+							{/if}
 						{/if}
-					{/if}
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			{/if}
 		</section>
 	</div>
 </div>
@@ -151,6 +163,12 @@
 			gap: 0.5rem;
 		}
 
+		h1 {
+			text-align: center;
+			margin: 0;
+			font-size: 3rem;
+		}
+
 		section {
 			display: flex;
 			flex-direction: column;
@@ -164,12 +182,28 @@
 				flex-direction: row;
 				align-items: center;
 				gap: 0.5rem;
+
+				.custom-select {
+					font-size: 1.25rem;
+				}
 			}
 
 			h2 {
 				font-size: 2rem;
 				margin: 0;
 				font-weight: 600;
+			}
+
+			h3 {
+				font-size: 1.75rem;
+				margin: 0;
+				font-weight: 600;
+				text-align: center;
+			}
+
+			.loading-table {
+				display: flex;
+				justify-content: center;
 			}
 
 			p {

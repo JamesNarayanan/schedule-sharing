@@ -145,8 +145,8 @@
 	.plus {
 		position: relative;
 		border-radius: 50%;
-		height: calc(var(--font-size) * 1.25 + 1rem);
-		width: calc(var(--font-size) * 1.25 + 1rem);
+		height: 1.85em;
+		width: 1.85em;
 
 		background-color: var(--low-alpha);
 
@@ -169,8 +169,8 @@
 				border: none;
 				border-radius: 50%;
 
-				font-size: calc(var(--font-size) * 1.25);
-				line-height: calc(var(--font-size) * 1.3);
+				font-size: 1.5em;
+				transform: translateY(-0.1em); // To center the + symbol
 			}
 
 			&.open {

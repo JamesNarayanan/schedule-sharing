@@ -173,3 +173,29 @@ a.button {
 .feather {
 	color: red;
 }
+
+.custom-select {
+	background: url("/src/assets/arrow-down-dark.svg") no-repeat var(--low-alpha);
+	background-size: 1em;
+	background-position: calc(100% - 0.25em) center;
+
+	padding: 0.25em 1.5em 0.25em 0.5em;
+	border: none;
+	border-radius: 0.35em;
+
+	font-size: 1em;
+	font-weight: 600;
+	transition: background-color 0.2s ease-in-out;
+
+	-moz-appearance: none; /* Firefox */
+	-webkit-appearance: none; /* Safari and Chrome */
+	appearance: none;
+
+	&:not(:disabled):hover {
+		background-color: var(--med-alpha);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		background-image: url("/src/assets/arrow-down.svg");
+	}
+}
