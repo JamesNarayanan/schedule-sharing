@@ -87,16 +87,16 @@
 	{#if !modalOpen}
 		<div
 			class="content closed"
-			in:fade={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
-			out:fade={{ duration: modalTransDur / 2 }}
+			in:fade|local={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
+			out:fade|local={{ duration: modalTransDur / 2 }}
 		>
 			<button on:click={toggleModal}>+</button>
 		</div>
 	{:else}
 		<div
 			class="content open"
-			in:fade={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
-			out:fade={{ duration: modalTransDur / 2 }}
+			in:fade|local={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
+			out:fade|local={{ duration: modalTransDur / 2 }}
 		>
 			{#if creationState === "start"}
 				<div class="form-content" in:flyIn out:flyOut>
@@ -136,8 +136,8 @@
 	<div
 		class="backdrop"
 		on:click={toggleModal}
-		in:fade={{ duration: modalTransDur / 2 }}
-		out:fade={{ duration: modalTransDur / 2, delay: modalTransDur / 2 }}
+		in:fade|local={{ duration: modalTransDur / 2 }}
+		out:fade|local={{ duration: modalTransDur / 2, delay: modalTransDur / 2 }}
 	/>
 {/if}
 
@@ -145,8 +145,8 @@
 	.plus {
 		position: relative;
 		border-radius: 50%;
-		height: calc(var(--font-size) * 1.25 + 1rem);
-		width: calc(var(--font-size) * 1.25 + 1rem);
+		height: 1.85em;
+		width: 1.85em;
 
 		background-color: var(--low-alpha);
 
@@ -169,8 +169,8 @@
 				border: none;
 				border-radius: 50%;
 
-				font-size: calc(var(--font-size) * 1.25);
-				line-height: calc(var(--font-size) * 1.3);
+				font-size: 1.5em;
+				transform: translateY(-0.1em); // To center the + symbol
 			}
 
 			&.open {

@@ -37,7 +37,7 @@
 			showSnackbar = true;
 			loading = false;
 		} else {
-			goto(redirect || "/profile");
+			goto(redirect || "/my-courses");
 		}
 	}
 </script>

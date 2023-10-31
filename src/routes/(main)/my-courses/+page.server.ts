@@ -21,7 +21,8 @@ export async function load({ locals: { supabase } }) {
 
 	const { data: semesterData, error: semesterError } = await supabase
 		.from("semesters")
-		.select("*");
+		.select("*")
+		.order("id", { ascending: false });
 	if (semesterError) {
 		console.error(semesterError);
 		throw error(500, semesterError.message);

@@ -4,7 +4,7 @@
 </script>
 
 <HeaderTitle>
-	<a href="/profile" class="button">Profile</a>
+	<a href="/my-courses" class="button">My Courses</a>
 </HeaderTitle>
 <main>
 	<h2>Error {$page.status}</h2>
