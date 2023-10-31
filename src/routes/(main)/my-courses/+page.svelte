@@ -8,6 +8,7 @@
 	export let data;
 	$: ({ supabase, user, semesters } = data);
 	$: currSemester = $semesterStore;
+	$: currSemesterName = semesters?.find(sem => sem.id == currSemester)?.name;
 	$: currSections = user?.sections.filter(section => section.semesters?.id === currSemester);
 
 	let snackbarMessage: string = "";
@@ -100,7 +101,7 @@
 			{:else if currSemester == -1}
 				<h3>Select a semester above to view your courses!</h3>
 			{:else}
-				<h2>My Courses</h2>
+				<h2>My {currSemesterName} Courses</h2>
 				<table class="table">
 					<thead>
 						<tr>
