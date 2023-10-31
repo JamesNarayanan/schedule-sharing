@@ -22,7 +22,7 @@
 </script>
 
 <HeaderTitle>
-	<a href="/profile" class="ul">Profile</a>
+	<a href="/my-courses" class="ul">My Courses</a>
 	<a href="/group" class="ul">Groups</a>
 	<button on:click={signOut}>Sign Out</button>
 </HeaderTitle>
