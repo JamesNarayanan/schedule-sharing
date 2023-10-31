@@ -87,16 +87,16 @@
 	{#if !modalOpen}
 		<div
 			class="content closed"
-			in:fade={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
-			out:fade={{ duration: modalTransDur / 2 }}
+			in:fade|local={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
+			out:fade|local={{ duration: modalTransDur / 2 }}
 		>
 			<button on:click={toggleModal}>+</button>
 		</div>
 	{:else}
 		<div
 			class="content open"
-			in:fade={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
-			out:fade={{ duration: modalTransDur / 2 }}
+			in:fade|local={{ delay: modalTransDur / 2, duration: modalTransDur / 2 }}
+			out:fade|local={{ duration: modalTransDur / 2 }}
 		>
 			{#if creationState === "start"}
 				<div class="form-content" in:flyIn out:flyOut>
@@ -136,8 +136,8 @@
 	<div
 		class="backdrop"
 		on:click={toggleModal}
-		in:fade={{ duration: modalTransDur / 2 }}
-		out:fade={{ duration: modalTransDur / 2, delay: modalTransDur / 2 }}
+		in:fade|local={{ duration: modalTransDur / 2 }}
+		out:fade|local={{ duration: modalTransDur / 2, delay: modalTransDur / 2 }}
 	/>
 {/if}
 
